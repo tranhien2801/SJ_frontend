@@ -1,0 +1,10 @@
+export const ROOT = "/";
+export const ADMIN = "/admin";
+export const ADMIN_HR="/admin/user-management"
+export const ADMIN_JUDGMENT = "/admin/judgment";
+export const ADMIN_HISTORY = "/admin/history";
+export const HOME = "/home";
+export const LOGIN_PAGE = "/login";
+export const FILE = "/File";
+export const ADMIN_WATCH_LIST = "/admin/watchList";
+export const DETAIL_GROUP = "/detail-group";
