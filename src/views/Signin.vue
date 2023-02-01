@@ -23,17 +23,16 @@
                 <div class="card-body">
                   <form role="form">
                     <div class="mb-3">
-                      <argon-input type="email" placeholder="Email" size="lg" v-model="user.username" />
+                      <input class="form-control" tabindex="1" type="email" placeholder="Email" v-model="user.username" />
                     </div>
                     <div class="mb-3">
-                      <argon-input type="password" placeholder="Mật khẩu" size="lg" v-model="user.password" />
+                      <input class="form-control" tabindex="2" type="password" placeholder="Mật khẩu" v-model="user.password" />
                     </div>
-                    <argon-switch id="rememberMe">Remember me</argon-switch>
+                    <argon-switch id="rememberMe">Lưu thông tin đăng nhập</argon-switch>
 
                     <div class="text-center">
                       <argon-button class="mt-4" variant="gradient" color="success" fullWidth size="lg"
-                        @click="btnSignIn">Sign
-                        in</argon-button>
+                        @click="btnSignIn">Đăng nhập</argon-button>
                     </div>
                   </form>
                 </div>
@@ -50,7 +49,7 @@
 <script>
 import axios from "axios";
 import * as APIConstant from "../const/api.const"
-import ArgonInput from "@/components/ArgonInput.vue";
+// import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 const body = document.getElementsByTagName("body")[0];
@@ -58,7 +57,7 @@ const body = document.getElementsByTagName("body")[0];
 export default {
   name: "signin",
   components: {
-    ArgonInput,
+    // ArgonInput,
     ArgonSwitch,
     ArgonButton,
   },
@@ -88,14 +87,18 @@ export default {
      */
     btnSignIn() {
       try {
-        alert(this.user.username);
+        var me = this;
         axios
-          .post(APIConstant.BASE_URL + APIConstant.LOGIN_PAGE, this.user)
+          .post(APIConstant.BASE_URL + APIConstant.LOGIN_PAGE, me.user)
           .then(function (response) {
-            console.log("Đăng nhập thành công");
             if (response.status != 200) {
               console.log(response.message)
+            } else {
+              window.localStorage.setItem("token", response.data.data.access_token)
             }
+          })
+          .catch (function(error) {
+            alert(error.message);
           })
       } catch (error) {
         console.log(error);

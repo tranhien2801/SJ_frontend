@@ -8,15 +8,14 @@
             :class="this.$store.state.isRTL ? 'text-lg-end' : 'text-lg-start'"
           >
             ©
-            {{ new Date().getFullYear() }}, made with
-            <i class="fa fa-heart"></i> by
+            {{ new Date().getFullYear() }}, <i class="fa fa-heart"></i> made by
             <a
-              href="https://www.creative-tim.com"
+              href="https://uet.vnu.edu.vn/"
               class="font-weight-bold"
               target="_blank"
-              >Creative Tim</a
+              >Tran Hien - UET</a
             >
-            for a better web.
+          
           </div>
         </div>
         <div class="col-lg-6">
@@ -25,36 +24,28 @@
           >
             <li class="nav-item">
               <a
-                href="https://www.creative-tim.com"
+                href="https://github.com/tranhien2801/SJ_backend"
                 class="nav-link text-muted"
                 target="_blank"
-                >Creative Tim</a
+                >BackEnd</a
               >
             </li>
             <li class="nav-item">
               <a
-                href="https://www.creative-tim.com/presentation"
+                href="https://github.com/tranhien2801/SJ_frontend"
                 class="nav-link text-muted"
                 target="_blank"
-                >About Us</a
+                >FrontEnd</a
               >
             </li>
             <li class="nav-item">
               <a
-                href="https://www.creative-tim.com/blog"
+                href="https://github.com/tranhien2801/SJ_CrawlData"
                 class="nav-link text-muted"
                 target="_blank"
-                >Blog</a
+                >Crawl Data</a
               >
-            </li>
-            <li class="nav-item">
-              <a
-                href="https://www.creative-tim.com/license"
-                class="nav-link pe-0 text-muted"
-                target="_blank"
-                >License</a
-              >
-            </li>
+            </li>            
           </ul>
         </div>
       </div>

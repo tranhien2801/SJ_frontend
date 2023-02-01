@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.1.165:8080/";
+const BASE_URL = "http://192.168.1.165:8000/";
 
 const HEADER_DEFAULT = {
   Accept: "application/json",
@@ -23,7 +23,7 @@ export const DELETE_USER = "user";
 export const CHANGE_PASSWORD = "user/change-password";
 export const EDIT_USER = "user/{0}";
 export const GET_HISTORY = "user-activity";
-export const GET_USER_LOGIN = "user/list";
+export const GET_USER_LIST = "user/list";
 export const RESET_PASSWORD = "user/reset-password/{0}";
 
 export {
