@@ -12,7 +12,7 @@ const routes = [
   {
     path: "/",
     name: "/",
-    redirect: "/dashboard-default",
+    redirect: "/signin",
   },
   {
     path: "/dashboard-default",
@@ -20,7 +20,7 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: "/tables",
+    path: "/admin",
     name: "Tables",
     component: Tables,
   },

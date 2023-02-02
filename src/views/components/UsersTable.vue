@@ -8,7 +8,13 @@
         <table class="table align-items-center mb-0">
           <thead>
             <tr>
-              <th> <argon-checkbox id="checkboxId"></argon-checkbox>
+              <th>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" v-model="selectedAll" />
+                  <label :for="id" class="custom-control-label">
+                    <slot />
+                  </label>
+                </div>
               </th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thông tin cá nhân</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cấp tài khoản</th>
@@ -30,7 +36,13 @@
           </thead>
           <tbody>
             <tr v-for="user in users" :key="user.uid">
-              <td> <argon-checkbox id="checkboxId" class=""></argon-checkbox>
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" v-model="selected" :value="user.uid" />
+                  <label :for="id" class="custom-control-label">
+                    <slot />
+                  </label>
+                </div>
               </td>
               <td>
                 <div class="d-flex px-2 py-1">
@@ -73,7 +85,18 @@
             </tr>
           </tbody>
         </table>
+
       </div>
+      <footer class="m-page-toolbar">
+        <div class="total-record">
+          Tổng số: <strong>{{ totalRecord }}</strong> bản ghi
+        </div>
+        <div class="pages m-toolbar-right">
+          <Paginate v-model="pageNumber" :page-count="totalPage" :page-range="3" :margin-pages="2"
+            :click-handler="clickCallback" :prev-text="'Trước'" :next-text="'Sau'" :container-class="'paginate'"
+            :page-class="'page-item'" />
+        </div>
+      </footer>
     </div>
   </div>
 </template>
@@ -81,17 +104,40 @@
 <script>
 import axios from "axios";
 import * as APIConstant from "@/const/api.const"
-import ArgonCheckbox from "@/components/ArgonCheckbox.vue";
+import Paginate from "vuejs-paginate-next";
 
 export default {
   name: "users-table",
   components: {
-    ArgonCheckbox,
+    Paginate,
+
   },
   data() {
     return {
       users: [],
+      totalRecord: 0,
+      pageNumber: 1,
+      totalPage: 0,
+      selected: [],
     }
+  },
+  computed: {
+    selectedAll: {
+      get: function () {
+        return this.selected.length == this.users.length ? true : false;
+      },
+      set: function (value) {
+        var selected = [];
+
+        if (value) {
+          this.users.forEach(function (user) {
+            selected.push(user.uid);
+          });
+        }
+
+        this.selected = selected;
+      },
+    },
   },
   /**
    * Lấy dữ liệu người dùng hệ thống khi component được tạo thành công
@@ -109,13 +155,16 @@ export default {
       try {
         var token = window.localStorage.getItem("token");
         axios
-          .get(APIConstant.BASE_URL + APIConstant.GET_USER_LIST,
+          .get(APIConstant.BASE_URL + APIConstant.GET_USER_LIST + `?page=${this.pageNumber}`,
             {
               headers: { 'Authorization': 'Bearer ' + token }
             })
           .then((response) => {
             console.log(response);
             this.users = response.data.data;
+            this.totalPage = response.data.total_page;
+            this.totalRecord = response.data.total;
+            this.pageNumber = response.data.page;
           })
           .catch((error) => {
             console.log(error);
@@ -124,7 +173,29 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    },
+    /**
+     * Hàm phân trang pre và next
+     * Author: TTHIEN (01/02/2023)
+     */
+    clickCallback(pageNumber) {
+      console.log("chuyển trang");
+      console.log(pageNumber);
+      this.pageNumber = pageNumber;
+      this.filterUsers();
+    },
+
   }
 };
 </script>
+
+<style lang="css">
+/* Adopt bootstrap pagination stylesheet. */
+@import "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css";
+
+/* Write your own CSS for pagination */
+/* .pagination {
+  }
+  .page-item {
+  } */
+</style>

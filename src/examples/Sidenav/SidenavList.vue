@@ -17,7 +17,7 @@
       </li>
       <li class="nav-item">
         <sidenav-item
-          url="/tables"
+          url="/admin"
           :class="getRoute() === 'tables' ? 'active' : ''"
           :navText="'Tables'"
         >

@@ -8,3 +8,4 @@ export const LOGIN_PAGE = "/login";
 export const FILE = "/File";
 export const ADMIN_WATCH_LIST = "/admin/watchList";
 export const DETAIL_GROUP = "/detail-group";
+export const BASE_URL = "http://localhost:8080";

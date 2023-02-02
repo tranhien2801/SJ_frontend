@@ -48,8 +48,8 @@
 
 <script>
 import axios from "axios";
-import * as APIConstant from "../const/api.const"
-// import ArgonInput from "@/components/ArgonInput.vue";
+import * as APIConstant from "../const/api.const";
+import * as Path from "../const/path.const";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 const body = document.getElementsByTagName("body")[0];
@@ -90,11 +90,13 @@ export default {
         var me = this;
         axios
           .post(APIConstant.BASE_URL + APIConstant.LOGIN_PAGE, me.user)
-          .then(function (response) {
+          .then((response) => {
             if (response.status != 200) {
               console.log(response.message)
             } else {
-              window.localStorage.setItem("token", response.data.data.access_token)
+              window.localStorage.setItem("token", response.data.data.access_token);
+              window.location = Path.BASE_URL + Path.ADMIN;
+              // me.$router.replace({name: "Tables"});
             }
           })
           .catch (function(error) {

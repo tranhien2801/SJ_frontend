@@ -1,0 +1,42 @@
+.m-page-toolbar {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 36px;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.m-page-toolbar .m-toolbar-right {
+    display: flex;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    align-items: center;
+}
+
+.paginate {
+    /* margin-left: 20px; */
+    margin-right: 20px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-item {
+    margin: 0 5px;
+    cursor: pointer;
+    /* width: 24px; */
+    height: 24px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.page-item.active {
+    border: 1px solid #dfdfdf;
+    font-weight: 700;
+    text-align: center;
+}

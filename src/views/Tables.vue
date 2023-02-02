@@ -4,8 +4,10 @@
       <div class="col-12">
         <users-table />
       </div>
+      
     </div>
   </div>
+
 </template>
 
 <script>
@@ -14,10 +16,11 @@ import UsersTable from "./components/UsersTable.vue";
 export default {
   name: "tables",
   components: {
-    UsersTable
+    UsersTable,
   },
   data() {
     return {
+      currentPage: 1,
       stats: {
         titleColor: "opacity-7 text-white",
         descColor: "text-white",
@@ -46,3 +49,7 @@ export default {
   },
 };
 </script>
+
+<style>
+@import url('../assets/css/components/paginate.css');
+</style>
