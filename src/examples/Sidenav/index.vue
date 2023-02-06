@@ -9,13 +9,14 @@
     :class="`${
       this.$store.state.isRTL
         ? 'me-3 rotate-caret fixed-end'
-        : 'fixed-start ms-3'
+        : 'fixed-start ms-2'
     } 
     ${
       this.$store.state.layout === 'landing'
         ? 'bg-transparent shadow-none'
         : ' '
     } ${this.$store.state.sidebarType}`"
+    :style="{height: fit-content}"
     id="sidenav-main"
   >
     <div class="sidenav-header">

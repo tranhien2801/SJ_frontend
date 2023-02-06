@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8000/";
+const BASE_URL = "http://192.168.1.165:8000/";
 
 const HEADER_DEFAULT = {
   Accept: "application/json",
@@ -25,6 +25,8 @@ export const EDIT_USER = "user/{0}";
 export const GET_HISTORY = "user-activity";
 export const GET_USER_LIST = "user/list";
 export const RESET_PASSWORD = "user/reset-password/{0}";
+export const GET_JUDGMENT_LIST = "judgment/list";
+export const GET_JUDGMENT = "judgment/"
 
 export {
   BASE_URL,

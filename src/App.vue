@@ -21,10 +21,16 @@ Coded by www.creative-tim.com
     :custom_class="this.$store.state.mcolor"
     :class="[
       this.$store.state.isTransparent,
-      this.$store.state.isRTL ? 'fixed-end' : 'fixed-start'
     ]"
     v-if="this.$store.state.showSidenav"
   />
+  <div
+    v-show="this.$store.state.layout === 'default'"
+    class="min-height-300 position-absolute w-100"
+    :class="`${this.$store.state.darkMode ? 'bg-transparent' : 'bg-success'}`"
+    v-if="!this.$store.state.showSidenav"
+
+    />
   <main
     class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
   >
@@ -84,3 +90,6 @@ export default {
   }
 };
 </script>
+<style>
+@import url('../src/assets/css/main.css');
+</style>

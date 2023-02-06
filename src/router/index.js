@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import Tables from "../views/Tables.vue";
-import Billing from "../views/Billing.vue";
+import Judgment from "../views/Judgment.vue";
 import VirtualReality from "../views/VirtualReality.vue";
 import RTL from "../views/Rtl.vue";
 import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
+import JudgmentDetail from "../views/JudgmentDetail.vue";
 
 const routes = [
   {
@@ -20,14 +21,24 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: "/admin",
-    name: "Tables",
+    path: "/users",
+    name: "Users",
     component: Tables,
   },
   {
-    path: "/billing",
-    name: "Billing",
-    component: Billing,
+    path: "/users",
+    name: "Users",
+    component: Tables,
+  },
+  {
+    path: "/home",
+    name: "Judgment",
+    component: Judgment,
+  },
+  {
+    path: "/judgment-detail",
+    name: "JudgmentDetail",
+    component: JudgmentDetail,
   },
   {
     path: "/virtual-reality",
@@ -54,7 +65,7 @@ const routes = [
     name: "Signup",
     component: Signup,
   },
-  
+
 ];
 
 const router = createRouter({

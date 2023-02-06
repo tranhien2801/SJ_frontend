@@ -85,26 +85,25 @@
             </tr>
           </tbody>
         </table>
-
       </div>
-      <footer class="m-page-toolbar">
-        <div class="total-record">
+      <div class="d-flex pb-0 px-3 p-3">
+        <div class="">
           Tổng số: <strong>{{ totalRecord }}</strong> bản ghi
         </div>
-        <div class="pages m-toolbar-right">
-          <Paginate v-model="pageNumber" :page-count="totalPage" :page-range="3" :margin-pages="2"
+        <div class="ms-auto text-end">
+          <Paginate v-model="pageNumber" :page-count="totalPage" :page-range="3" :margin-pages="1"
             :click-handler="clickCallback" :prev-text="'Trước'" :next-text="'Sau'" :container-class="'paginate'"
             :page-class="'page-item'" />
         </div>
-      </footer>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import * as APIConstant from "@/const/api.const"
-import Paginate from "vuejs-paginate-next";
+import * as APIConstant from "@/const/api.const";
+import Paginate from "@/libs/vuejs-paginate-next";
 
 export default {
   name: "users-table",
@@ -134,7 +133,6 @@ export default {
             selected.push(user.uid);
           });
         }
-
         this.selected = selected;
       },
     },

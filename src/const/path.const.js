@@ -1,5 +1,7 @@
 export const ROOT = "/";
 export const ADMIN = "/admin";
+export const TABLES = "/tables";
+export const USERS = "/users";
 export const ADMIN_HR="/admin/user-management"
 export const ADMIN_JUDGMENT = "/admin/judgment";
 export const ADMIN_HISTORY = "/admin/history";

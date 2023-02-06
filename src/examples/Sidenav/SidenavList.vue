@@ -17,9 +17,9 @@
       </li>
       <li class="nav-item">
         <sidenav-item
-          url="/admin"
-          :class="getRoute() === 'tables' ? 'active' : ''"
-          :navText="'Tables'"
+          url="/users"
+          :class="getRoute() === 'users' ? 'active' : ''"
+          :navText="'Người dùng'"
         >
           <template v-slot:icon>
             <i
@@ -30,9 +30,9 @@
       </li>
       <li class="nav-item">
         <sidenav-item
-          url="/billing"
-          :class="getRoute() === 'billing' ? 'active' : ''"
-          :navText="'Billing'"
+          url="/home"
+          :class="getRoute() === 'judgment' ? 'active' : ''"
+          :navText="'Bản án'"
         >
           <template v-slot:icon>
             <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
@@ -82,17 +82,17 @@
       </li>
     </ul>
   </div>
-  <div class="pt-3 mx-3 mt-3 sidenav-footer">
+  <!-- <div class="pt-3 mx-3 mt-3 sidenav-footer">
     <sidenav-card
       :class="cardBg"
       textPrimary="Need Help?"
       textSecondary="Please check our docs"
     />
-  </div>
+  </div> -->
 </template>
 <script>
 import SidenavItem from "./SidenavItem.vue";
-import SidenavCard from "./SidenavCard.vue";
+// import SidenavCard from "./SidenavCard.vue";
 
 export default {
   name: "SidenavList",
@@ -108,7 +108,7 @@ export default {
   },
   components: {
     SidenavItem,
-    SidenavCard
+    // SidenavCard
   },
   methods: {
     getRoute() {

@@ -47,6 +47,13 @@ export default {
       },
     };
   },
+  created() {
+    this.$store.state.showSidenav = false;
+  },
+  beforeUnmount() {
+    this.$store.state.hideConfigButton = false;
+    this.$store.state.showSidenav = true;
+  },
 };
 </script>
 
