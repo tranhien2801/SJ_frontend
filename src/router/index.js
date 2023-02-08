@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
-import Tables from "../views/Tables.vue";
+import Users from "../views/Users.vue";
+import Managers from "../views/Managers.vue";
 import Judgment from "../views/Judgment.vue";
-import VirtualReality from "../views/VirtualReality.vue";
-import RTL from "../views/Rtl.vue";
 import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
@@ -13,7 +12,7 @@ const routes = [
   {
     path: "/",
     name: "/",
-    redirect: "/signin",
+    redirect: "/home",
   },
   {
     path: "/dashboard-default",
@@ -23,12 +22,12 @@ const routes = [
   {
     path: "/users",
     name: "Users",
-    component: Tables,
+    component: Users,
   },
   {
-    path: "/users",
-    name: "Users",
-    component: Tables,
+    path: "/managers",
+    name: "Managers",
+    component: Managers,
   },
   {
     path: "/home",
@@ -36,19 +35,9 @@ const routes = [
     component: Judgment,
   },
   {
-    path: "/judgment-detail",
+    path: "/judgment-detail/:uid",
     name: "JudgmentDetail",
     component: JudgmentDetail,
-  },
-  {
-    path: "/virtual-reality",
-    name: "Virtual Reality",
-    component: VirtualReality,
-  },
-  {
-    path: "/rtl-page",
-    name: "RTL",
-    component: RTL,
   },
   {
     path: "/profile",

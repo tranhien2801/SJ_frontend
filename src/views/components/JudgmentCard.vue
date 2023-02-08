@@ -7,23 +7,23 @@
       <ul class="list-group">
         <li class="list-group-item border-0 d-flex mb-3 p-3 bg-gray-100 border-radius-lg" v-for="judgment in judgments"
           :key="judgment.uid">
-          <div class="d-flex flex-column">
-            <h6 class="text-sm font-weight-normal">{{ judgment.title }} - 
-              <span class="text-dark font-weight-bold">{{ judgment.case_name }}</span>
+          <div class="d-flex flex-column mx-2">
+            <h6 class="text-sm text-dark text-gradient font-weight-normal">{{ judgment.title }} - 
+              <span class="text-dark text-gradient font-weight-bold">{{ judgment.case_name }}</span>
             </h6>            
             <span class="mb-2 text-xs">
-              <span class="text-dark">{{ judgment.judgment_content }}</span>
+              <span class="text-dark text-gradient">{{ judgment.judgment_content }}</span>
             </span>
-            <span class="text-xs text-danger">
+            <span class="text-xs text-success font-weight-bold">
               Tổng số lượt được bình chọn làm nguồn phát triển án lệ:
-              <span class="text-danger ms-sm-2">{{ judgment.count_vote }}</span>
+              <span class="ms-sm-2">{{ judgment.count_vote }}</span>
             </span>
           </div>
           <div class="ms-auto text-end">
-            <a class="btn btn-link text-dark text-gradient px-3 mb-0" href="javascript:;" @click="viewJudgmentDetail(judgment)">
+            <a class="btn btn-link text-success text-gradient my-2 px-3 mb-0" href="javascript:;" @click="viewJudgmentDetail(judgment)">
               <i class="far fa-eye me-2" aria-hidden="true"></i>{{ judgment.count_eyes }}
             </a>
-            <a class="btn btn-link text-dark px-3 mb-0" :href="judgment.file_download">
+            <a class="btn btn-link text-success text-gradient px-3 mb-0" :href="judgment.file_download">
               <i class="fas fa-thin fa-download text-dark me-2"
                 aria-hidden="true"></i>{{ judgment.count_download }}
             </a>
@@ -94,12 +94,12 @@ export default {
             })
           .then((response) => {
             console.log(response);
+            me.showLoading = false;
             me.totalPage = response.data.total_page;
             me.totalRecord = response.data.total;
             me.pageNumber = response.data.page;
             me.judgments = response.data.data;
             me.convertJudgmentTitle();
-            me.showLoading = false;
           })
           .catch((error) => {
             console.log(error);
@@ -138,14 +138,12 @@ export default {
      * Author: TTHIEN (06/02/2023)
      */
      viewJudgmentDetail(judgment) {
-      var data = judgment.uid;
-      // me.$router.replace(`/judgment-detail/${me.uid}`);
-      this.$router.push({
+      var uid = judgment.uid;
+      this.$router.replace({
         name: "JudgmentDetail",
-        params: {data}
+        params: {uid}
       })
-      console.log(data);
-      console.log(this.$route.params.data);
+      console.log(uid);
      }
   }
 };

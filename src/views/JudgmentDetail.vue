@@ -4,55 +4,80 @@
       <div class="col-lg-12">
         <div class="row">
           <div class="col-md-1"></div>
-          <div class="col-md-3">
-            <carousel />
+          <div class="col-md-3 fit-content">
+            <JudgmentInfo :judgment="judgment"/>
+            <div class="my-3">
+              <JudgmentResponse :judgment="judgment"/>
+            </div>
           </div>
           <div class="col-md-7">
             <div class="card z-index-2">
-              <!-- <iframe src="https://congbobanan.toaan.gov.vn/Resources/pdfjs/web/viewer.html?file=%2F3ta335072t1cvn/" ></iframe> -->
-              <JudgmentIframe :uid="uid" />
+              <iframe class="load-pdf" :src="judgment.pdf_viewer"></iframe>
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import Carousel from "./components/Carousel.vue";
-import JudgmentIframe from "./components/JudgmentIframe.vue";
+import axios from "axios";
+import * as APIConstant from "@/const/api.const";
+import * as DateUtils from "../utils/date.utils.js";
+import JudgmentInfo from "./components/JudgmentInfo.vue";
+import JudgmentResponse from "./components/JudgmentResponse.vue";
 
 export default {
   name: "judgment-detail",
   data() {
     return {
-      uid: String,
+      uid: '0003160bd2d74bc3aa006a2f66ed78f9',
+      judgment: {},
     }
   },
   components: {
-    Carousel,
-    JudgmentIframe
-  },
+    JudgmentInfo,
+    JudgmentResponse
+},
   created() {
     this.$store.state.showSidenav = false;
-  },
-  mounted() {
-    var me = this; 
-    me.uid = this.$router.params.data;
-    console.log(this.$router.params.data);
+    this.uid = this.$route.params.uid;
+    this.detailJudgment();
   },
   beforeUnmount() {
     this.$store.state.hideConfigButton = false;
     this.$store.state.showSidenav = true;
   },
   methods: {
-    
+    /**
+        * Lấy thông tin chi tiết của một bản án với uid
+        * Author: TTHIEN (06/02/2023)
+        */
+    detailJudgment() {
+      var me = this;
+      var token = window.localStorage.getItem("token");
+      axios
+        .get(APIConstant.BASE_URL + APIConstant.GET_JUDGMENT + me.uid,
+          {
+            headers: { 'Authorization': 'Bearer ' + token }
+          })
+        .then((response) => {
+          console.log(me.uid);
+          console.log(response)
+          if (response.data.status == 200)
+            me.judgment = response.data.data;
+            me.judgment.date_issued = DateUtils.formatDate(me.judgment.date_issued);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    },
   }
 };
 </script>
 <style>
-#ifame_pub{
-  min-height:800px;
+.load-pdf {
+    min-height: 800px;
 }
 </style>

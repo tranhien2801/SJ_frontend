@@ -26,7 +26,8 @@ export const GET_HISTORY = "user-activity";
 export const GET_USER_LIST = "user/list";
 export const RESET_PASSWORD = "user/reset-password/{0}";
 export const GET_JUDGMENT_LIST = "judgment/list";
-export const GET_JUDGMENT = "judgment/"
+export const GET_JUDGMENT = "judgment/";
+export const GET_MANAGER_LIST = "user/managers";
 
 export {
   BASE_URL,
