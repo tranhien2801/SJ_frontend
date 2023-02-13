@@ -35,7 +35,7 @@
             </div>
             <div class="d-flex flex-column">
                 <label for="" class="text-sm text-success font-weight-bold">Nhập mô tả lỗi</label>
-                <argon-input type="text" class="" />
+                <argon-textarea type="text" class="" />
             </div>
             <argon-button color="success" size="md" variant="gradient">Gửi phản hồi</argon-button>
 
@@ -44,15 +44,17 @@
 </template>
 
 <script>
-import ArgonInput from "@/components/ArgonInput.vue";
+// import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
+import ArgonTextarea from "../../components/ArgonTextarea.vue";
 
 export default {
     name: "JudgmentResponse",
     props: ["judgment"],
     components: {
-        ArgonInput,
+        // ArgonInput,
         ArgonButton,
+        ArgonTextarea,
     },
 };
 </script>

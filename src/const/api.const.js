@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.1.165:8000/";
+const BASE_URL = "http://192.168.1.137:8000/";
 
 const HEADER_DEFAULT = {
   Accept: "application/json",
@@ -28,6 +28,13 @@ export const RESET_PASSWORD = "user/reset-password/{0}";
 export const GET_JUDGMENT_LIST = "judgment/list";
 export const GET_JUDGMENT = "judgment/";
 export const GET_MANAGER_LIST = "user/managers";
+export const GET_UNIT_LIST = "unit/list";
+export const GET_CASE_TYPE_LIST = "case-type/list";
+
+export const KEY_TOKEN = "accessToken";
+export const ROLE_ID = "role";
+export const USER_ID = "user_id";
+export const USER_NAME = "userName";
 
 export {
   BASE_URL,

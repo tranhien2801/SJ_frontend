@@ -12,7 +12,7 @@ const routes = [
   {
     path: "/",
     name: "/",
-    redirect: "/home",
+    redirect: "/signin",
   },
   {
     path: "/dashboard-default",
@@ -31,6 +31,11 @@ const routes = [
   },
   {
     path: "/home",
+    name: "Home",
+    component: Judgment,
+  },
+  {
+    path: "/judgment",
     name: "Judgment",
     component: Judgment,
   },

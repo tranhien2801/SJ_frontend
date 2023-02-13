@@ -52,6 +52,8 @@ import axios from "axios";
 import * as APIConstant from "@/const/api.const";
 import * as DateUtils from "../../utils/date.utils.js";
 import Paginate from "@/libs/vuejs-paginate-next";
+// import * as API from '../../api/index';
+import Cookies from "js-cookie";
 
 export default {
   name: "judgment-card",
@@ -86,11 +88,10 @@ export default {
       try {
         var me = this;
         me.showLoading = true;
-        var token = window.localStorage.getItem("token");
         axios
           .get(APIConstant.BASE_URL + APIConstant.GET_JUDGMENT_LIST + `?page=${me.pageNumber}`,
             {
-              headers: { 'Authorization': 'Bearer ' + token }
+              headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) }
             })
           .then((response) => {
             console.log(response);

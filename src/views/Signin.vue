@@ -21,7 +21,7 @@
                   <p class="mb-0">Nhập tên đăng nhập và mật khẩu của bạn</p>
                 </div>
                 <div class="card-body">
-                  <form role="form">
+                  <div role="form">
                     <div class="mb-3">
                       <input class="form-control" tabindex="1" type="email" placeholder="Email" v-model="user.username" />
                     </div>
@@ -34,7 +34,7 @@
                       <argon-button class="mt-4" variant="gradient" color="success" fullWidth size="lg"
                         @click="btnSignIn">Đăng nhập</argon-button>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>
@@ -48,7 +48,10 @@
 
 <script>
 import axios from "axios";
+// import Cookies from "js-cookie";
 import * as APIConstant from "../const/api.const";
+// import * as API from '../api/index';
+import * as Utils from "../utils/index";
 // import * as Path from "../const/path.const";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
@@ -88,18 +91,20 @@ export default {
     btnSignIn() {
       try {
         var me = this;
-        axios
-          .post(APIConstant.BASE_URL + APIConstant.LOGIN_PAGE, me.user)
-          .then((response) => {
-            alert(me.$route.path);
-
-            if (response.status != 200) {
-              console.log(response.message)
+        console.log(me.user);
+        axios({
+          method: "post",
+          url: APIConstant.BASE_URL + APIConstant.LOGIN_PAGE,
+          data: me.user
+        })
+        .then((response) => {
+            alert(me.user.username);
+            if (response.status != APIConstant.STT_OK) {
+              alert(response.data.message)
             } else {
-              window.localStorage.setItem("token", response.data.data.access_token);
-              // window.location = Path.BASE_URL + Path.USERS;
-              me.$router.replace({name: "Tables"});
-              alert(me.$route.path);
+              Utils.handlingLogin(response.data.data);
+              me.$router.replace({name: "Judgment"});
+              alert("Đăng nhập thành công");
             }
           })
           .catch ((error) => {
