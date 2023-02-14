@@ -23,10 +23,12 @@
                 <div class="card-body">
                   <div role="form">
                     <div class="mb-3">
-                      <input class="form-control" tabindex="1" type="email" placeholder="Email" v-model="user.username" />
+                      <input class="form-control" tabindex="1" type="email" placeholder="Email"
+                        v-model="user.username" />
                     </div>
                     <div class="mb-3">
-                      <input class="form-control" tabindex="2" type="password" placeholder="Mật khẩu" v-model="user.password" />
+                      <input class="form-control" tabindex="2" type="password" placeholder="Mật khẩu"
+                        v-model="user.password" />
                     </div>
                     <argon-switch id="rememberMe">Lưu thông tin đăng nhập</argon-switch>
 
@@ -44,15 +46,15 @@
       </div>
     </section>
   </main>
+  <PopUpValidate v-show="isShowPopupValidate" :message="message" :color="color"
+    @hidePopupValidate="hidePopupValidate" />
 </template>
 
 <script>
 import axios from "axios";
-// import Cookies from "js-cookie";
 import * as APIConstant from "../const/api.const";
-// import * as API from '../api/index';
 import * as Utils from "../utils/index";
-// import * as Path from "../const/path.const";
+import PopUpValidate from "../components/PopUpValidate.vue";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 const body = document.getElementsByTagName("body")[0];
@@ -60,7 +62,7 @@ const body = document.getElementsByTagName("body")[0];
 export default {
   name: "signin",
   components: {
-    // ArgonInput,
+    PopUpValidate,
     ArgonSwitch,
     ArgonButton,
   },
@@ -80,7 +82,10 @@ export default {
   },
   data() {
     return {
-      user: {}
+      user: {},
+      isShowPopupValidate: false,
+      message: "",
+      color: "success",
     };
   },
   methods: {
@@ -91,30 +96,42 @@ export default {
     btnSignIn() {
       try {
         var me = this;
-        console.log(me.user);
         axios({
           method: "post",
           url: APIConstant.BASE_URL + APIConstant.LOGIN_PAGE,
           data: me.user
         })
-        .then((response) => {
-            alert(me.user.username);
+          .then((response) => {
             if (response.status != APIConstant.STT_OK) {
-              alert(response.data.message)
+              this.message = response.data.message;
+              this.isShowPopupValidate = true;
+              this.color = "danger";
             } else {
+              this.message = response.data.message;
+              this.isShowPopupValidate = true;
+              this.color = "success";
               Utils.handlingLogin(response.data.data);
-              me.$router.replace({name: "Judgment"});
-              alert("Đăng nhập thành công");
+              me.$router.replace({ name: "Judgment" });
             }
           })
-          .catch ((error) => {
-            alert(error.message);
+          .catch((error) => {
+            console.log(error)
+            this.message = Utils.formatResponseError(error);
+            this.isShowPopupValidate = true;
+            this.color = "danger";
           })
       } catch (error) {
         console.log(error);
       }
 
-    }
+    },
+    /**
+     * Ẩn PopupValidate 
+     * Author: TTHIEN (13/02/2023)
+     */
+    hidePopupValidate() {
+      this.isShowPopupValidate = false;
+    },
   }
 };
 </script>

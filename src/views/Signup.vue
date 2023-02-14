@@ -23,19 +23,19 @@
                 <div class="col-md-4">
                   <label for="example-text-input" class="form-control-label">Tên tài khoản</label>
                   <input class="form-control" type="text" v-model="user.name" ref="txtName"
-                    title="Tên người dùng không được để trống" />
+                    title="Tên người dùng không được để trống" @blur="validateRequired" />
                   <div class="name__missing">Tên không được để trống</div>
                 </div>
                 <div class="col-md-4">
                   <label for="example-text-input" class="form-control-label">Email</label>
                   <input type="email" class="form-control" v-model="user.email" ref="txtEmail"
-                    title="Email người dùng không được để trống" />
+                    title="Email người dùng không được để trống" @blur="validateRequired" />
                   <div class="name__missing">Email không được để trống</div>
                 </div>
                 <div class="col-md-4">
                   <label for="example-text-input" class="form-control-label">Mật khẩu</label>
                   <input class="form-control" type="password" v-model="user.password" ref="txtPassword"
-                    title="Mật khẩu không được để trống" />
+                    title="Mật khẩu không được để trống" @blur="validateRequired" />
                   <div class="name__missing">Mật khẩu không được để trống</div>
                 </div>
                 <div class="col-md-4">
@@ -105,13 +105,15 @@
       </div>
     </div>
   </main>
-  <PopUpValidate v-show="isShowPopupValidate" :message="message" @hidePopupValidate="hidePopupValidate" />
+  <PopUpValidate v-show="isShowPopupValidate" :message="message" :color="color"
+    @hidePopupValidate="hidePopupValidate" />
 </template>
 
 <script>
 import axios from "axios";
 import Cookies from "js-cookie";
 import * as APIConstant from "@/const/api.const";
+import * as Utils from "../utils/index";
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
 import ProfileCard from "./components/ProfileCard.vue";
@@ -149,6 +151,7 @@ export default {
       ],
       isShowPopupValidate: false,
       message: "",
+      color: "success",
     };
   },
   components: { ProfileCard, ArgonButton, Multiselect, PopUpValidate },
@@ -234,6 +237,7 @@ export default {
         // Validate dữ liệu
         var isValid = me.validateData();
         if (!isValid) {
+          this.color = "warning";
           return;
         }
         axios({
@@ -244,14 +248,22 @@ export default {
         })
           .then((response) => {
             if (response.status != APIConstant.STT_OK) {
-              alert(response.data.message)
+              // alert(response.data.message)
+              this.message = response.data.error;
+              this.isShowPopupValidate = true;
+              this.color = "danger";
             } else {
               // me.$router.replace({ name: "Judgment" });
-              alert("Đăng ký thành công");
+              // alert("Đăng ký thành công");
+              this.message = "Thêm tài khoản thành công";
+              this.isShowPopupValidate = true;
+              this.color = "success";
             }
           })
           .catch((error) => {
-            alert(error.message);
+            this.message = Utils.formatResponseError(error);
+            this.isShowPopupValidate = true;
+            this.color = "danger";
           })
       } catch (error) {
         console.log(error);
@@ -309,6 +321,24 @@ export default {
 
       return isValid;
     },
+
+    /**
+    * Thực hiện validate dữ liệu bắt buộc nhập
+    * Author: TTHIEN (14/02/2022)
+    */
+    validateRequired() {
+      var value = event.currentTarget.value;
+      if (!value) {
+        // Thêm border màu đỏ cho input hiện tại
+        event.currentTarget.classList.add("input__error");
+        // Thêm title thông báo lỗi
+      } else {
+        // Loại bỏ border màu đỏ cho input hiện tại
+        event.currentTarget.classList.remove("input__error");
+        // Loại bỏ title thông báo lỗi
+      }
+    },
+
 
   }
 };
