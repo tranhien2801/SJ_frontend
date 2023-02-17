@@ -44,7 +44,6 @@
 </template>
 
 <script>
-// import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 import ArgonTextarea from "../../components/ArgonTextarea.vue";
 
@@ -52,7 +51,6 @@ export default {
     name: "JudgmentResponse",
     props: ["judgment"],
     components: {
-        // ArgonInput,
         ArgonButton,
         ArgonTextarea,
     },

@@ -1,25 +1,19 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-8">
-        <judgment-card />
-      </div>
-      <div class="col-md-4 fit-content">
-        <transaction-card />
-      </div>
+      <div class="col-md-1"></div>
+      <judgment-card :response="response" />
     </div>
-  </div>
+</div>
 </template>
 
 <script>
 import JudgmentCard from "./components/JudgmentCard.vue";
-import TransactionCard from "./components/TransactionCard.vue";
 
 export default {
   name: "Judgment",
   components: {
     JudgmentCard,
-    TransactionCard,
   },
   data() {
     return {
@@ -36,6 +30,13 @@ export default {
         price: "$455.00",
       },
     };
+  },
+  created() {
+    this.$store.state.showSidenav = false;
+  },
+  beforeUnmount() {
+    this.$store.state.hideConfigButton = false;
+    this.$store.state.showSidenav = true;
   },
 };
 </script>

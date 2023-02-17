@@ -9,6 +9,7 @@
     font-size: var(--ms-font-size, 0.875rem);
     justify-content: flex-end;
     margin: 0 auto;
+    height: 40px;
     min-height: calc(var(--ms-border-width, 1px)*2 + var(--ms-font-size, 1rem)*var(--ms-line-height, 1.375) + var(--ms-py, .5rem)*2);
     outline: none;
     position: relative;

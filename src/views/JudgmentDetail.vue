@@ -15,7 +15,6 @@
               <iframe class="load-pdf" :src="judgment.pdf_viewer"></iframe>
             </div>
           </div>
-
         </div>
       </div>
     </div>

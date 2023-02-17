@@ -136,7 +136,7 @@ export default {
       ],
       usageTimes: [
         { value: 0, name: '7 ngày dùng thử' },
-        { value: 1, name: "vĩnh viện" }
+        { value: 1, name: "vĩnh viễn" }
       ],
       states: [
         { value: 1, name: "active" },
@@ -248,13 +248,10 @@ export default {
         })
           .then((response) => {
             if (response.status != APIConstant.STT_OK) {
-              // alert(response.data.message)
               this.message = response.data.error;
               this.isShowPopupValidate = true;
               this.color = "danger";
             } else {
-              // me.$router.replace({ name: "Judgment" });
-              // alert("Đăng ký thành công");
               this.message = "Thêm tài khoản thành công";
               this.isShowPopupValidate = true;
               this.color = "success";

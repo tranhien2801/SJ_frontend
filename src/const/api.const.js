@@ -30,6 +30,10 @@ export const GET_JUDGMENT = "judgment/";
 export const GET_MANAGER_LIST = "user/managers";
 export const GET_UNIT_LIST = "unit/list";
 export const GET_CASE_TYPE_LIST = "case-type/list";
+export const GET_COURT_LIST = "court/list";
+export const GET_COURT_LEVEL_LIST = "court/court-level";
+export const GET_JUDGMENT_LEVEL_LIST = "judgment/judgment-level"
+
 
 export const KEY_TOKEN = "accessToken";
 export const ROLE_ID = "role";

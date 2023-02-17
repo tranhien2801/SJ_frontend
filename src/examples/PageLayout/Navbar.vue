@@ -59,7 +59,7 @@
                 aria-hidden="true"
                 :class="isBlur ? 'text-dark' : 'text-white'"
               ></i>
-              Sign Up
+              Đăng ký
             </router-link>
           </li>
           <li class="nav-item">
