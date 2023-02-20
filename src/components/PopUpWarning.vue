@@ -10,35 +10,53 @@
                 </div>
             </div>
             <div class="pop-up__line"></div>
-            <div class="pop-up__footer pop-up__center">
-                <argon-button :color="color" variant="gradient" size="sm" class=""
-                    @click="btnCloseOnClick">Đóng</argon-button>
+            <div class="pop-up__footer">
+                <div class="pop-up__footer-left">
+                    <argon-button color="danger" @click="btnYesOnClick"  size="sm">Có</argon-button>
+                </div>
+                <div class="pop-up__footer-right">
+                    <argon-button size="sm" color="success" @click="btnNoOnClick">Không</argon-button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
+
+
 <script>
 import ArgonButton from "@/components/ArgonButton.vue";
+import * as Utils from "@/utils/index";
 
 export default {
-    name: "PopupValidate",
-    props: ["message", "color"],
+    name: "PopUpWarning",
+    props: ['message', "color"],
     components: { ArgonButton },
 
     methods: {
         /**
-         * Thực hiện đóng popup
-         * Author: TTHIEN (13/02/2023)
+         * Thực hiện không đăng xuất
+         * Author: TTHIEN(15/08/2022)
          */
-        btnCloseOnClick() {
-            this.$emit("hidePopupValidate", false);
+        btnNoOnClick() {
+            this.$emit("hidePopup", false);
+        },
+
+
+        /**
+         * Thực hiện thao tác đăng xuất
+         * Author: TTHIEN (16/08/2022)
+         */
+        btnYesOnClick() {
+            this.$emit("hidePopup", false);
+            Utils.handlingLogout();
+            this.$router.replace({ name: "Signin" });
         },
         /**
          * Lấy color + icon phù hợp
          * Author: TTHIEN (19/02/2023)
          */
-        getClasses: (color) => {
+         getClasses: (color) => {
             var icon = 'fa-info-circle';
             if (color === 'warning') {
                 icon = 'fa-exclamation-triangle';
@@ -47,13 +65,15 @@ export default {
             }
             return `${icon} text-${color}`;
         }
-    }
+    },
+    data() {
+
+    },
 }
 </script>
 
 <style scoped>
 @import url(../assets/css/components/popup.css);
-
 .icon {
     width: 30px;
     height: 30px;

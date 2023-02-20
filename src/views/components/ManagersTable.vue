@@ -88,7 +88,8 @@
   import axios from "axios";
   import * as APIConstant from "@/const/api.const";
   import Paginate from "@/libs/vuejs-paginate-next";
-  
+  import Cookies from "js-cookie";
+
   export default {
     name: "managers-table",
     components: {
@@ -135,11 +136,10 @@
        */
        filterManagers() {
         try {
-          var token = window.localStorage.getItem("token");
           axios
             .get(APIConstant.BASE_URL + APIConstant.GET_MANAGER_LIST + `?page=${this.pageNumber}`,
               {
-                headers: { 'Authorization': 'Bearer ' + token }
+                headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) }
               })
             .then((response) => {
               console.log(response);

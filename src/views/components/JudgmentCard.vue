@@ -1,5 +1,6 @@
 <template>
-  <div class="col-md-3 fit-content">
+<!-- Phần bộ lọc tìm kiếm -->
+  <div class="col-md-3 mx-5 fit-content">
     <div class="card overflow-hidden h-100 p-0">
       <div class="d-flex panel-heading text-gradient">
         <div class="border-0 d-flex flex-column font-weight-bold p-3 mb-0">
@@ -14,28 +15,28 @@
             <span class="input-group-text text-body">
               <i class="fas fa-search" aria-hidden="true"></i>
             </span>
-            <input v-model="filter.judgmentName" type="text" class="form-control"
+            <input v-model="filter.judgmentNumber" type="text" class="form-control"
               :placeholder="'Nhập số bản án/quyết định'" />
           </div>
         </div>
         <span class="mb-3 text-sm font-weight-bold">
           Loại vụ/việc
-          <Multiselect v-model="filter.caseType" class="text-dark" track-by="value" label="value" :options="caseTypes">
+          <Multiselect v-model="filter.caseType" class="text-dark font-weight-normal" track-by="value" label="value" :options="caseTypes">
           </Multiselect>
         </span>
         <span class="mb-3 text-sm font-weight-bold">
           Cấp tòa án
-          <Multiselect v-model="filter.courtLevel" class="text-dark" :options="courtLevels">
+          <Multiselect v-model="filter.courtLevel" class="text-dark font-weight-normal" :options="courtLevels">
           </Multiselect>
         </span>
         <span class="mb-3 text-sm font-weight-bold">
           Cấp xét xử
-          <Multiselect v-model="filter.judgmentLevel" class="text-dark" :options="judgmentLevels">
+          <Multiselect v-model="filter.judgmentLevel" class="text-dark font-weight-normal" :options="judgmentLevels">
           </Multiselect>
         </span>
         <span class="mb-3 text-sm font-weight-bold">
           Bản án/quyết định
-          <Multiselect v-model="filter.typeDocument" class="text-dark" track-by="value" label="value"
+          <Multiselect v-model="filter.typeDocument" class="text-dark font-weight-normal" track-by="value" label="value"
             :options="typeDocuments">
           </Multiselect>
         </span>
@@ -43,6 +44,7 @@
       </div>
     </div>
   </div>
+  <!-- Phần hiện danh sách bản án theo bộ lọc tìm kiếm -->
   <div class="col-md-7">
     <div class="card">
       <div class="card-header pb-0 px-3">

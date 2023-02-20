@@ -45,7 +45,7 @@ Coded by www.creative-tim.com
     />
     <router-view />
     <app-footer v-show="this.$store.state.showFooter" />
-    <configurator
+    <ChangePassword
       :toggle="toggleConfigurator"
       :class="[
         this.$store.state.showConfig ? 'show' : '',
@@ -56,7 +56,7 @@ Coded by www.creative-tim.com
 </template>
 <script>
 import Sidenav from "./examples/Sidenav";
-import Configurator from "@/examples/Configurator.vue";
+import ChangePassword from "@/examples/ChangePassword.vue";
 import Navbar from "@/examples/Navbars/Navbar.vue";
 import AppFooter from "@/examples/Footer.vue";
 import { mapMutations } from "vuex";
@@ -65,7 +65,7 @@ export default {
   name: "App",
   components: {
     Sidenav,
-    Configurator,
+    ChangePassword,
     Navbar,
     AppFooter
   },

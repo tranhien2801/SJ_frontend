@@ -1,0 +1,310 @@
+<template>
+    <div class="card">
+        <div class="card-body">
+            <p class="text-uppercase text-sm">Thông tin tài khoản</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="example-text-input" class="form-control-label">Tên tài khoản</label>
+                    <input class="form-control" type="text" v-model="user.name" ref="txtName"
+                        title="Tên người dùng không được để trống" @blur="validateRequired" />
+                    <div class="name__missing">Tên không được để trống</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="example-text-input" class="form-control-label">Cấp tài khoản</label>
+                    <Multiselect v-model="user.level" label="levelName" track-by="value" :options="levels">
+                    </Multiselect>
+                </div>
+                <div class="col-md-6">
+                    <label for="example-text-input" class="form-control-label">Email</label>
+                    <input type="email" class="form-control" v-model="user.email" ref="txtEmail"
+                        title="Email người dùng không được để trống" @blur="validateRequired" />
+                    <div class="name__missing">Email không được để trống</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="example-text-input" class="form-control-label">Mật khẩu</label>
+                    <input class="form-control" type="password" v-model="user.password" ref="txtPassword"
+                        title="Mật khẩu không được để trống" @blur="validateRequired" />
+                    <div class="name__missing">Mật khẩu không được để trống</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="example-text-input" class="form-control-label">Trạng thái tài khoản</label>
+                    <Multiselect v-model="user.state" track-by="value" label="name" :options="states">
+                    </Multiselect>
+                </div>
+                <div class="col-md-6">
+                    <label for="example-text-input" class="form-control-label">Thời hạn sử dụng</label>
+                    <Multiselect v-model="user.usageTime" track-by="value" label="name" :options="usageTimes">
+                    </Multiselect>
+                </div>
+                <div class="col-md-12">
+                    <label for="example-text-input" class="form-control-label">Chức năng được thực hiện</label>
+                    <input class="form-control" type="text" v-model="user.functions" />
+                </div>
+                <div class="col-md-12">
+                    <label for="example-text-input" class="form-control-label">Quan tâm đến nội dung pháp
+                        lý</label>
+                    <Multiselect mode="tags"   :create-option="true" v-model="user.caseTypes" track-by="value" label="value" :options="caseTypes">
+                    </Multiselect>
+                </div>
+
+            </div>
+            <hr class="horizontal dark" />
+            <p class="text-uppercase text-sm">Thông tin liên lạc</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="example-text-input" class="form-control-label">Đơn vị công tác</label>
+                    <Multiselect v-model="user.unit" track-by="value" label="value" :options="units">
+                    </Multiselect>
+                </div>
+                <div class="col-md-6">
+                    <label for="example-text-input" class="form-control-label">Số điện thoại</label>
+                    <input class="form-control" type="tel" v-model="user.phoneNumber" />
+                </div>
+
+                <div class="col-md-6">
+                    <label for="example-text-input" class="form-control-label">Quyền, Chức vụ</label>
+                    <Multiselect v-model="user.role" track-by="value" label="name" :options="roles">
+                    </Multiselect>
+                    <div class="name__missing">Quyền, chức vụ không được để trống</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="example-text-input" class="form-control-label">Công việc</label>
+                    <input class="form-control" type="text" v-model="user.work" />
+                </div>
+                <div class="col-md-6">
+                    <label for="example-text-input" class="form-control-label">Số lượng người trong doanh
+                        nghiệp</label>
+                    <input class="form-control" type="text" v-model="user.numberEmployee" />
+                </div>
+            </div>
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <argon-button color="success" size="sm" class="ms-auto" @click="createUser">{{ nameButton
+                    }}</argon-button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <PopUpValidate v-show="isShowPopupValidate" :message="message" :color="color" @hidePopupValidate="hidePopupValidate" />
+</template>
+
+<script>
+import axios from "axios";
+import Cookies from "js-cookie";
+import * as APIConstant from "@/const/api.const";
+import * as Utils from "@/utils/index";
+import * as Data from "@/const/data.const";
+import ArgonButton from "@/components/ArgonButton.vue";
+import Multiselect from '@vueform/multiselect';
+import PopUpValidate from "../../components/PopUpValidate.vue";
+
+export default {
+    name: "UserDetail",
+    components: {
+        ArgonButton, Multiselect, PopUpValidate,
+    },
+    props: ['userEdit', "nameButton"],
+    data() {
+        return {
+            user: {},
+            units: [],
+            caseTypes: [],
+            levels: Data.LEVELS,
+            usageTimes: Data.USAGE_TIME,
+            states: Data.STATES,
+            roles: Data.ROLES,
+            isShowPopupValidate: false,
+            message: "",
+            color: "success",
+        };
+    },
+    created() {
+        this.getUnits();
+        this.getCaseTypes();
+        
+    },
+    updated() {
+        if (this.$props.userEdit){
+            this.user = this.userEdit;
+            console.log("Dữ liệu người dùng")
+            console.log(this.user);
+        }
+        else console.log("Không có dữ liệu");
+    },
+    methods: {
+        /**
+         * Lấy dữ liệu đơn vị công tác
+         * Author: TTHIEN (12/02/2023)
+         */
+        getUnits() {
+            try {
+                axios
+                    .get(APIConstant.BASE_URL + APIConstant.GET_UNIT_LIST,
+                        {
+                            headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) }
+                        })
+                    .then((response) => {
+                        this.units = response.data.data;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        /**
+         * Lấy dữ liệu loại vụ việc
+         * Author: TTHIEN (12/02/2023)
+         */
+        getCaseTypes() {
+            try {
+                axios
+                    .get(APIConstant.BASE_URL + APIConstant.GET_CASE_TYPE_LIST)
+                    .then((response) => {
+                        this.caseTypes = response.data.data;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        /**
+         * Tạo tài khoản người dùng
+         * Author: TTHIEN (12/02/2022)
+         */
+        createUser() {
+            try {
+                var me = this;
+
+                // Validate dữ liệu
+                var isValid = me.validateData();
+                if (!isValid) {
+                    this.color = "warning";
+                    return;
+                }
+                console.log(me.user);
+                axios({
+                    method: "post",
+                    url: APIConstant.BASE_URL + APIConstant.CREATE_USER_LOGIN,
+                    headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+                    data: me.user
+                })
+                    .then((response) => {
+                        if (response.status != APIConstant.STT_OK) {
+                            this.message = response.data.error;
+                            this.isShowPopupValidate = true;
+                            this.color = "danger";
+                        } else {
+                            this.message = "Thêm tài khoản thành công";
+                            this.isShowPopupValidate = true;
+                            this.color = "success";
+                        }
+                    })
+                    .catch((error) => {
+                        this.message = Utils.formatResponseError(error);
+                        this.isShowPopupValidate = true;
+                        this.color = "danger";
+                    })
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        /**
+         * Ẩn PopupValidate 
+         * Author: TTHIEN (13/02/2023)
+         */
+        hidePopupValidate() {
+            this.isShowPopupValidate = false;
+        },
+        /**
+         * Thực hiện validate dữ liệu trước khi cất
+         * Author: TTHIEN(13/02/2023)
+         */
+        validateData() {
+            var isValid = true;
+            if (!this.user.name) {
+                isValid = false;
+                this.message = "Tên người dùng không được bỏ trống";
+                this.isShowPopupValidate = true;
+                // Thêm border màu đỏ cho input hiện tại
+                this.$refs["txtName"].classList.add("input__error");
+                return isValid;
+            } else {
+                isValid = true;
+                // Loại bỏ border màu đỏ cho input hiện tại
+                this.$refs["txtName"].classList.remove("input__error");
+            }
+            if (!this.user.email) {
+                isValid = false;
+                this.message = "Email người dùng không được bỏ trống";
+                this.isShowPopupValidate = true;
+                // Thêm border màu đỏ cho input hiện tại
+                this.$refs["txtEmail"].classList.add("input__error");
+                return isValid;
+            } else {
+                isValid = true;
+                // Loại bỏ border màu đỏ cho input hiện tại
+                this.$refs["txtEmail"].classList.remove("input__error");
+            }
+            if (!this.user.password) {
+                isValid = false;
+                this.message = "Mật khẩu không được bỏ trống";
+                this.isShowPopupValidate = true;
+                // Thêm border màu đỏ cho input hiện tại
+                this.$refs["txtPassword"].classList.add("input__error");
+                return isValid;
+            } else if (this.user.password.length < 8) {
+                isValid = false;
+                this.message = "Mật khẩu phải có kích thước lớn hơn 8";
+                this.isShowPopupValidate = true;
+                return isValid;
+            } else {
+                isValid = true;
+                // Loại bỏ border màu đỏ cho input hiện tại
+                this.$refs["txtPassword"].classList.remove("input__error");
+            }
+
+            return isValid;
+        },
+
+        /**
+        * Thực hiện validate dữ liệu bắt buộc nhập
+        * Author: TTHIEN (14/02/2022)
+        */
+        validateRequired() {
+            var value = event.currentTarget.value;
+            if (!value) {
+                // Thêm border màu đỏ cho input hiện tại
+                event.currentTarget.classList.add("input__error");
+                // Thêm title thông báo lỗi
+            } else {
+                // Loại bỏ border màu đỏ cho input hiện tại
+                event.currentTarget.classList.remove("input__error");
+                // Loại bỏ title thông báo lỗi
+            }
+        },
+
+
+    }
+}
+</script>
+<style>
+@import url('../../assets/css/components/multiselect.css');
+
+.name__missing {
+    text-align: center;
+    font-size: 0.875rem;
+    width: 100%;
+    padding: 3px 12px;
+    position: absolute;
+    visibility: hidden;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+</style>

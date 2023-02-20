@@ -3,8 +3,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="row">
-          <div class="col-md-1"></div>
-          <div class="col-md-3 fit-content">
+          <div class="col-md-3 mx-5 fit-content">
             <JudgmentInfo :judgment="judgment"/>
             <div class="my-3">
               <JudgmentResponse :judgment="judgment"/>
@@ -26,6 +25,7 @@ import * as APIConstant from "@/const/api.const";
 import * as DateUtils from "../utils/date.utils.js";
 import JudgmentInfo from "./components/JudgmentInfo.vue";
 import JudgmentResponse from "./components/JudgmentResponse.vue";
+import Cookies from "js-cookie";
 
 export default {
   name: "judgment-detail",
@@ -55,11 +55,10 @@ export default {
         */
     detailJudgment() {
       var me = this;
-      var token = window.localStorage.getItem("token");
       axios
         .get(APIConstant.BASE_URL + APIConstant.GET_JUDGMENT + me.uid,
           {
-            headers: { 'Authorization': 'Bearer ' + token }
+            headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) }
           })
         .then((response) => {
           console.log(me.uid);

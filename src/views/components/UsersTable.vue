@@ -1,101 +1,110 @@
 <template>
-  <div class="card">
-    <div class="card-header pb-0">
-      <h6>Danh sách người dùng hệ thống</h6>
+  <div class="row">
+    <div class="col-md-7 ms-5">
+      <div class="card">
+        <div class="card-header pb-0">
+          <h6>Danh sách người dùng hệ thống</h6>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" v-model="selectedAll" />
+                      <!-- <label :for="id" class="custom-control-label">
+                    <slot />
+                  </label> -->
+                    </div>
+                  </th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thông tin cá nhân</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cấp tài khoản</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái
+                  </th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Thời gian sử dụng
+                  </th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Chức vụ</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Công việc</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Số người trong
+                    doanh
+                    nghiệp</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nội dung pháp lý
+                    quan
+                    tâm</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Chức năng được thực
+                    hiện</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
+                  <th class="text-secondary opacity-7"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="user in users" :key="user.uid">
+                  <td>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" v-model="selected" :value="user.uid" />
+                      <!-- <label :for="id" class="custom-control-label">
+                    <slot />
+                  </label> -->
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{ user.name }}</h6>
+                        <p class="text-xs text-secondary mb-0"> {{ user.email }}</p>
+                        <p class="text-xs text-secondary mb-0">{{ user.phone_number }}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="text-secondary text-xs font-weight-bold">{{ user.power }}</span>
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <span class="badge badge-sm bg-gradient-success">Online</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-bold"> {{ user.usage_time }}</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-bold">{{ user.role }}</span>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">{{ user.unit_name }}</p>
+                    <p class="text-xs text-secondary mb-0">{{ user.work_name }}</p>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-bold">{{ user.number_staff }}</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-bold">{{ user.case_type }}</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-bold">{{ user.function }}</span>
+                  </td>
+                  <td class="align-middle text-warning">
+                    <a @click="btnEdit(user)" class="font-weight-bold text-xs text-warning" data-toggle="tooltip"
+                      data-original-title="Edit user"><i class="fa fa-pencil me-2" aria-hidden="true"></i>Edit</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex pb-0 px-3 p-3">
+            <div class="">
+              Tổng số: <strong>{{ totalRecord }}</strong> bản ghi
+            </div>
+            <div class="ms-auto text-end">
+              <Paginate v-model="pageNumber" :page-count="totalPage" :page-range="3" :margin-pages="1"
+                :click-handler="clickCallback" :prev-text="'Trước'" :next-text="'Sau'" :container-class="'paginate'"
+                :page-class="'page-item'" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card-body px-0 pt-0 pb-2">
-      <div class="table-responsive p-0">
-        <table class="table align-items-center mb-0">
-          <thead>
-            <tr>
-              <th>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" v-model="selectedAll" />
-                  <label :for="id" class="custom-control-label">
-                    <slot />
-                  </label>
-                </div>
-              </th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thông tin cá nhân</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cấp tài khoản</th>
-              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái
-              </th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Thời gian sử dụng
-              </th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Chức vụ</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Công việc</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Số người trong doanh
-                nghiệp</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nội dung pháp lý quan
-                tâm</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Chức năng được thực
-                hiện</th>
-              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
-              <th class="text-secondary opacity-7"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="user in users" :key="user.uid">
-              <td>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" v-model="selected" :value="user.uid" />
-                  <label :for="id" class="custom-control-label">
-                    <slot />
-                  </label>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">{{ user.name }}</h6>
-                    <p class="text-xs text-secondary mb-0"> {{ user.email }}</p>
-                    <p class="text-xs text-secondary mb-0">{{ user.phone_number }}</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <span class="text-secondary text-xs font-weight-bold">{{ user.power }}</span>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <span class="badge badge-sm bg-gradient-success">Online</span>
-              </td>
-              <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold"> {{ user.usage_time }}</span>
-              </td>
-              <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">{{ user.role }}</span>
-              </td>
-              <td>
-                <p class="text-xs font-weight-bold mb-0">{{ user.unit_name }}</p>
-                <p class="text-xs text-secondary mb-0">{{ user.work_name }}</p>
-              </td>
-              <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">{{ user.number_staff }}</span>
-              </td>
-              <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">{{ user.case_type }}</span>
-              </td>
-              <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">{{ user.function }}</span>
-              </td>
-              <td class="align-middle">
-                <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                  data-original-title="Edit user">Edit</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="d-flex pb-0 px-3 p-3">
-        <div class="">
-          Tổng số: <strong>{{ totalRecord }}</strong> bản ghi
-        </div>
-        <div class="ms-auto text-end">
-          <Paginate v-model="pageNumber" :page-count="totalPage" :page-range="3" :margin-pages="1"
-            :click-handler="clickCallback" :prev-text="'Trước'" :next-text="'Sau'" :container-class="'paginate'"
-            :page-class="'page-item'" />
-        </div>
-      </div>
+    <div class="col-md-4 ms-3">
+      <UserDetail :userEdit="userEdit" nameButton="Chỉnh sửa" />
     </div>
   </div>
 </template>
@@ -103,13 +112,16 @@
 <script>
 import axios from "axios";
 import * as APIConstant from "@/const/api.const";
+import * as Data from "@/const/data.const";
 import Paginate from "@/libs/vuejs-paginate-next";
+import UserDetail from "./UserDetail.vue";
+import Cookies from "js-cookie";
 
 export default {
   name: "users-table",
   components: {
     Paginate,
-
+    UserDetail,
   },
   data() {
     return {
@@ -118,6 +130,9 @@ export default {
       pageNumber: 1,
       totalPage: 0,
       selected: [],
+      isShowForm: false,
+      userEdit: {},
+      mode: null,
     }
   },
   computed: {
@@ -145,20 +160,25 @@ export default {
     this.filterUsers();
   },
   methods: {
+    btnEdit(user) {
+      this.userEdit = user;
+      this.mode = Data.MODES.Edit;
+      console.log("Truyền dữ liệu");
+      console.log(this.userEdit);
+    },
+    
     /**
      * Lấy dữ liệu cho việc tìm kiếm/ phân trang người dùng
      * Author: TTHIEN (31/01/2023)
      */
     filterUsers() {
       try {
-        var token = window.localStorage.getItem("token");
         axios
           .get(APIConstant.BASE_URL + APIConstant.GET_USER_LIST + `?page=${this.pageNumber}`,
             {
-              headers: { 'Authorization': 'Bearer ' + token }
+              headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) }
             })
           .then((response) => {
-            console.log(response);
             this.users = response.data.data;
             this.totalPage = response.data.total_page;
             this.totalRecord = response.data.total;
@@ -190,10 +210,4 @@ export default {
 <style lang="css">
 /* Adopt bootstrap pagination stylesheet. */
 @import "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css";
-
-/* Write your own CSS for pagination */
-/* .pagination {
-  }
-  .page-item {
-  } */
 </style>

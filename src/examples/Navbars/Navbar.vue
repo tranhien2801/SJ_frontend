@@ -16,11 +16,15 @@
           </div>
         </div>
         <ul class="navbar-nav justify-content-end">
-          <li class="nav-item d-flex align-items-center">
-            <router-link :to="{ name: 'Signin' }" class="px-0 nav-link font-weight-bold text-white" target="_blank">
-              <i class="fa fa-user" :class="this.$store.state.isRTL ? 'ms-sm-2' : 'me-sm-2'"></i>
-              <span class="d-sm-inline d-none">Đăng nhập</span>
-            </router-link>
+          <li class="nav-item d-flex align-items-center" @click="btnSignout">
+            <!-- <router-link :to="{ name: 'Signin' }" class="px-0 nav-link font-weight-bold text-white">
+              <i class="fa fa-sign-out me-sm-2" aria-hidden="true"></i>
+              <span class="d-sm-inline d-none">Đăng xuất</span>
+            </router-link> -->
+            <div class="px-0 nav-link font-weight-bold text-white">
+              <i class="fa fa-sign-out me-sm-2" aria-hidden="true"></i>
+              <span class="d-sm-inline d-none">Đăng xuất</span>
+            </div>
           </li>
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
             <a href="#" @click="toggleSidebar" class="p-0 nav-link text-white" id="iconNavbarSidenav">
@@ -122,16 +126,22 @@
       </div>
     </div>
   </nav>
+  <PopUpWarning v-show="isShowPopup" :message="message" :color="color"
+    @hidePopup="hidePopup" />
 </template>
 <script>
 import Breadcrumbs from "../Breadcrumbs.vue";
 import { mapMutations, mapActions } from "vuex";
+import PopUpWarning from "../../components/PopUpWarning.vue";
 
 export default {
   name: "navbar",
   data() {
     return {
-      showMenu: false
+      showMenu: false,
+      isShowPopup: false,
+      message: "",
+      color: "success",
     };
   },
   props: ["minNav", "textWhite"],
@@ -145,10 +155,19 @@ export default {
     toggleSidebar() {
       this.toggleSidebarColor("bg-white");
       this.navbarMinimize();
+    },
+    btnSignout() {
+      this.message = "Bạn chắc chắn muốn đăng xuất?";
+      this.color = "warning";
+      this.isShowPopup = true;
+    },
+    hidePopup() {
+      this.isShowPopup = false;
     }
-  },
+  }, 
   components: {
-    Breadcrumbs
+    Breadcrumbs,
+    PopUpWarning,
   },
   computed: {
     currentRouteName() {

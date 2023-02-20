@@ -105,7 +105,7 @@ export default {
             if (response.status != APIConstant.STT_OK) {
               this.message = response.data.message;
               this.isShowPopupValidate = true;
-              this.color = "danger";
+              this.color = "warning";
             } else {
               this.message = response.data.message;
               this.isShowPopupValidate = true;
