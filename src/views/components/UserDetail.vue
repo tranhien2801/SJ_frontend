@@ -11,7 +11,8 @@
                 </div>
                 <div class="col-md-6">
                     <label for="example-text-input" class="form-control-label">Cấp tài khoản</label>
-                    <Multiselect v-model="user.level" label="levelName" track-by="value" :options="levels">
+                    <Multiselect v-model="user.level" :placeholder="user.level" label="levelName" track-by="value"
+                        :options="levels">
                     </Multiselect>
                 </div>
                 <div class="col-md-6">
@@ -20,20 +21,22 @@
                         title="Email người dùng không được để trống" @blur="validateRequired" />
                     <div class="name__missing">Email không được để trống</div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" v-show="this.mode === '1'">
                     <label for="example-text-input" class="form-control-label">Mật khẩu</label>
                     <input class="form-control" type="password" v-model="user.password" ref="txtPassword"
                         title="Mật khẩu không được để trống" @blur="validateRequired" />
                     <div class="name__missing">Mật khẩu không được để trống</div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" v-show="this.mode === '2'">
                     <label for="example-text-input" class="form-control-label">Trạng thái tài khoản</label>
-                    <Multiselect v-model="user.state" track-by="value" label="name" :options="states">
+                    <Multiselect v-model="user.state" :placeholder="user.state" track-by="value" label="name"
+                        :options="states">
                     </Multiselect>
                 </div>
                 <div class="col-md-6">
                     <label for="example-text-input" class="form-control-label">Thời hạn sử dụng</label>
-                    <Multiselect v-model="user.usageTime" track-by="value" label="name" :options="usageTimes">
+                    <Multiselect v-model="user.usageTime" :placeholder="user.usageTime" track-by="value" label="name"
+                        :options="usageTimes">
                     </Multiselect>
                 </div>
                 <div class="col-md-12">
@@ -43,7 +46,8 @@
                 <div class="col-md-12">
                     <label for="example-text-input" class="form-control-label">Quan tâm đến nội dung pháp
                         lý</label>
-                    <Multiselect mode="tags"   :create-option="true" v-model="user.caseTypes" track-by="value" label="value" :options="caseTypes">
+                    <Multiselect mode="tags" v-model="user.caseTypes" :placeholder="user.caseTypes" track-by="value"
+                        label="value" :options="caseTypes">
                     </Multiselect>
                 </div>
 
@@ -53,7 +57,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <label for="example-text-input" class="form-control-label">Đơn vị công tác</label>
-                    <Multiselect v-model="user.unit" track-by="value" label="value" :options="units">
+                    <Multiselect v-model="user.unit" :placeholder="user.unit" track-by="value" label="value"
+                        :options="units">
                     </Multiselect>
                 </div>
                 <div class="col-md-6">
@@ -63,7 +68,8 @@
 
                 <div class="col-md-6">
                     <label for="example-text-input" class="form-control-label">Quyền, Chức vụ</label>
-                    <Multiselect v-model="user.role" track-by="value" label="name" :options="roles">
+                    <Multiselect v-model="user.role" :placeholder="user.role" track-by="value" label="name"
+                        :options="roles">
                     </Multiselect>
                     <div class="name__missing">Quyền, chức vụ không được để trống</div>
                 </div>
@@ -103,7 +109,7 @@ export default {
     components: {
         ArgonButton, Multiselect, PopUpValidate,
     },
-    props: ['userEdit', "nameButton"],
+    props: ['userEdit', "nameButton", "mode"],
     data() {
         return {
             user: {},
@@ -121,15 +127,12 @@ export default {
     created() {
         this.getUnits();
         this.getCaseTypes();
-        
+
     },
     updated() {
-        if (this.$props.userEdit){
+        if (this.$props.userEdit) {
             this.user = this.userEdit;
-            console.log("Dữ liệu người dùng")
-            console.log(this.user);
         }
-        else console.log("Không có dữ liệu");
     },
     methods: {
         /**
@@ -187,33 +190,88 @@ export default {
                     this.color = "warning";
                     return;
                 }
-                console.log(me.user);
-                axios({
-                    method: "post",
-                    url: APIConstant.BASE_URL + APIConstant.CREATE_USER_LOGIN,
-                    headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
-                    data: me.user
-                })
-                    .then((response) => {
-                        if (response.status != APIConstant.STT_OK) {
-                            this.message = response.data.error;
+                if (this.mode == Data.MODES.Signup) {
+                    axios({
+                        method: "post",
+                        url: APIConstant.BASE_URL + APIConstant.CREATE_USER_LOGIN,
+                        headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+                        data: me.user
+                    })
+                        .then((response) => {
+                            if (response.status != APIConstant.STT_OK) {
+                                this.message = response.data.error;
+                                this.isShowPopupValidate = true;
+                                this.color = "danger";
+                            } else {
+                                this.message = "Thêm tài khoản thành công";
+                                this.isShowPopupValidate = true;
+                                this.color = "success";
+                                this.sendEmailConfirm();
+                            }
+                        })
+                        .catch((error) => {
+                            this.message = Utils.formatResponseError(error);
                             this.isShowPopupValidate = true;
                             this.color = "danger";
-                        } else {
-                            this.message = "Thêm tài khoản thành công";
-                            this.isShowPopupValidate = true;
-                            this.color = "success";
-                        }
-                    })
-                    .catch((error) => {
-                        this.message = Utils.formatResponseError(error);
+                        })
+                } else {
+                    if (this.user != this.userEdit) {
+                        axios({
+                            method: "put",
+                            url: APIConstant.BASE_URL + APIConstant.EDIT_USER + me.user.uid,
+                            headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+                            data: me.user
+                        })
+                            .then((response) => {
+                                if (response.status != APIConstant.STT_OK) {
+                                    this.message = response.data.error;
+                                    this.isShowPopupValidate = true;
+                                    this.color = "danger";
+                                } else {
+                                    this.message = "Sửa thông tin tài khoản thành công";
+                                    this.isShowPopupValidate = true;
+                                    this.color = "success";
+                                }
+                            })
+                            .catch((error) => {
+                                this.message = Utils.formatResponseError(error);
+                                this.isShowPopupValidate = true;
+                                this.color = "danger";
+                            })
+                    } else {
+                        this.message = "Dữ liệu không có sự thay đổi";
                         this.isShowPopupValidate = true;
-                        this.color = "danger";
-                    })
+                        this.color = "success";
+                    }
+                }
             } catch (error) {
                 console.log(error);
             }
         },
+        /**
+         * Thực hiện gửi email thông báo về việc sử dụng tài khoản
+         * Author: TTHIEN(24/02/2023)
+         */
+        sendEmailConfirm() {
+            try {
+                axios({
+                    method: "post",
+                    url: APIConstant.BASE_URL + APIConstant.SEND_EMAIL_CONFIRM,
+                    headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+                    data: this.user
+                })
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
         /**
          * Ẩn PopupValidate 
          * Author: TTHIEN (13/02/2023)
@@ -251,6 +309,7 @@ export default {
                 // Loại bỏ border màu đỏ cho input hiện tại
                 this.$refs["txtEmail"].classList.remove("input__error");
             }
+            if (this.userEdit) return isValid;
             if (!this.user.password) {
                 isValid = false;
                 this.message = "Mật khẩu không được bỏ trống";

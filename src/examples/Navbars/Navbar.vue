@@ -17,10 +17,6 @@
         </div>
         <ul class="navbar-nav justify-content-end">
           <li class="nav-item d-flex align-items-center" @click="btnSignout">
-            <!-- <router-link :to="{ name: 'Signin' }" class="px-0 nav-link font-weight-bold text-white">
-              <i class="fa fa-sign-out me-sm-2" aria-hidden="true"></i>
-              <span class="d-sm-inline d-none">Đăng xuất</span>
-            </router-link> -->
             <div class="px-0 nav-link font-weight-bold text-white">
               <i class="fa fa-sign-out me-sm-2" aria-hidden="true"></i>
               <span class="d-sm-inline d-none">Đăng xuất</span>
@@ -90,8 +86,8 @@
                 <a class="dropdown-item border-radius-md" href="javascript:;">
                   <div class="py-1 d-flex">
                     <div class="my-auto avatar avatar-sm bg-gradient-secondary me-3">
-                      <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1"
-                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                      <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink">
                         <title>credit-card</title>
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                           <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
@@ -126,13 +122,14 @@
       </div>
     </div>
   </nav>
-  <PopUpWarning v-show="isShowPopup" :message="message" :color="color"
-    @hidePopup="hidePopup" />
+  <PopUpWarning v-show="isShowPopup" :message="message" :color="color" @hidePopupYes="hidePopupYes"
+    @hidePopupNo="hidePopupNo" />
 </template>
 <script>
 import Breadcrumbs from "../Breadcrumbs.vue";
 import { mapMutations, mapActions } from "vuex";
 import PopUpWarning from "../../components/PopUpWarning.vue";
+import * as Utils from "@/utils/index";
 
 export default {
   name: "navbar",
@@ -161,10 +158,15 @@ export default {
       this.color = "warning";
       this.isShowPopup = true;
     },
-    hidePopup() {
+    hidePopupYes() {
+      Utils.handlingLogout();
+      this.isShowPopup = false;
+      this.$router.replace({ name: "Signin" });
+    },
+    hidePopupNo() {
       this.isShowPopup = false;
     }
-  }, 
+  },
   components: {
     Breadcrumbs,
     PopUpWarning,

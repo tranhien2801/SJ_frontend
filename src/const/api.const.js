@@ -21,7 +21,7 @@ export const LOGIN_PAGE = "auth/login";
 export const CREATE_USER_LOGIN = "auth/signup";
 export const DELETE_USER = "user";
 export const CHANGE_PASSWORD = "user/change-password";
-export const EDIT_USER = "user/{0}";
+export const EDIT_USER = "user/";
 export const GET_HISTORY = "user-activity";
 export const GET_USER_LIST = "user/list";
 export const RESET_PASSWORD = "user/reset-password/{0}";
@@ -33,6 +33,10 @@ export const GET_CASE_TYPE_LIST = "case-type/list";
 export const GET_COURT_LIST = "court/list";
 export const GET_COURT_LEVEL_LIST = "court/court-level";
 export const GET_JUDGMENT_LEVEL_LIST = "judgment/judgment-level"
+export const LIKED_JUDGMENT = 'judgment/liked';
+export const REPORT_JUDGMENT_ERROR = "judgment/error";
+export const SEND_EMAIL_CONFIRM = "sendMail";
+
 
 
 export const KEY_TOKEN = "accessToken";

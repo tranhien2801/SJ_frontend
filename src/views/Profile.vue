@@ -285,7 +285,7 @@
           </div>
         </div>
         <div class="col-md-4">
-          <profile-card />
+          <mail-card />
         </div>
       </div>
     </div>
@@ -295,7 +295,8 @@
 <script>
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
-import ProfileCard from "./components/ProfileCard.vue";
+// import ProfileCard from "./components/ProfileCard.vue";
+import MailCard from "./components/MailCard.vue";
 import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 
@@ -308,7 +309,7 @@ export default {
       showMenu: false
     };
   },
-  components: { ProfileCard, ArgonInput, ArgonButton },
+  components: {  ArgonInput, ArgonButton, MailCard },
 
   mounted() {
     this.$store.state.isAbsolute = true;

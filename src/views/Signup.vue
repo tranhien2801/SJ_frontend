@@ -25,7 +25,6 @@
 import UserDetail from './components/UserDetail.vue';
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
-// import ProfileCard from "./components/ProfileCard.vue";
 import * as Data from "@/const/data.const";
 const body = document.getElementsByTagName("body")[0];
 

@@ -35,4 +35,5 @@ export const formatResponseError = error => {
     return mess.reNewPassword[0];
   }
   return mess;
-}
+};
+

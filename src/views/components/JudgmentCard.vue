@@ -1,5 +1,4 @@
-<template>
-<!-- Phần bộ lọc tìm kiếm -->
+<template><!-- Phần bộ lọc tìm kiếm -->
   <div class="col-md-3 mx-5 fit-content">
     <div class="card overflow-hidden h-100 p-0">
       <div class="d-flex panel-heading text-gradient">
@@ -21,7 +20,8 @@
         </div>
         <span class="mb-3 text-sm font-weight-bold">
           Loại vụ/việc
-          <Multiselect v-model="filter.caseType" class="text-dark font-weight-normal" track-by="value" label="value" :options="caseTypes">
+          <Multiselect v-model="filter.caseType" class="text-dark font-weight-normal" track-by="value" label="value"
+            :options="caseTypes">
           </Multiselect>
         </span>
         <span class="mb-3 text-sm font-weight-bold">
@@ -56,6 +56,10 @@
             :key="judgment.uid">
             <div class="d-flex flex-column mx-2">
               <h6 class="mb-2 text-sm text-dark text-gradient font-weight-bold">{{ judgment.title }}
+                <a class="text-info text-gradient px-3 mb-0" 
+                    @click="likeJudgment(judgment.uid)">
+                    <i class="fa" :class="getLikedJudgment(judgment)" aria-hidden="true"></i>
+                  </a>
               </h6>
               <span class="mb-2 text-xs text-dark text-gradient font-weight-bold">Quan hệ pháp luật:
                 <span class="text-dark text-gradient font-weight-normal">{{ judgment.case_name }}</span>
@@ -75,13 +79,13 @@
               </span>
             </div>
             <div class="ms-auto text-end">
-              <a class="btn btn-link text-success text-gradient my-2 px-3 mb-0" href="javascript:;"
-                @click="viewJudgmentDetail(judgment)">
-                <i class="far fa-eye me-2" aria-hidden="true"></i>{{ judgment.count_eyes }}
-              </a>
-              <a class="btn btn-link text-success text-gradient px-3 mb-0" :href="judgment.file_download">
-                <i class="fas fa-thin fa-download text-dark me-2" aria-hidden="true"></i>{{ judgment.count_download }}
-              </a>
+                  <a class="btn btn-link text-success text-gradient my-2 px-3 mb-0" href="javascript:;"
+                    @click="viewJudgmentDetail(judgment)">
+                    <i class="far fa-eye me-2" aria-hidden="true"></i>{{ judgment.count_eyes }}
+                  </a>
+                  <a class="btn btn-link text-success text-gradient px-3 mb-0" :href="judgment.file_download">
+                    <i class="fas fa-thin fa-download text-dark me-2" aria-hidden="true"></i>{{ judgment.count_download }}
+                  </a>
             </div>
           </li>
         </ul>
@@ -100,7 +104,7 @@
     <div class="shadow-loading" v-show="showLoading">
       <div class="loading" />
     </div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -151,6 +155,38 @@ export default {
   },
   methods: {
     /**
+     * Lấy dữ liệu người dùng đã like bản án hay chưa?
+     * Author: TTHIEN(23/02/2023)
+     */
+    getLikedJudgment: (judgment) => {
+      if (judgment.user_uid == Cookies.get(APIConstant.USER_ID)) {
+        return "fa-thumbs-up";
+      } else {
+        return "fa-thumbs-o-up";
+      }
+    },
+    /**
+     * Liked/Disliked bản án
+     * Author: TTHIEN(23/02/2023)
+     */
+     likeJudgment(judgment_uid) {
+      axios({
+          method: "post",
+          url: APIConstant.BASE_URL + APIConstant.LIKED_JUDGMENT,
+          headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+          data: {
+            user_uid: Cookies.get(APIConstant.USER_ID),
+            judgment_uid: judgment_uid
+          }
+        })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+     },
+    /**
      * Lấy dữ liệu bản án theo bộ lọc/ tìm kiếm
      * Author: TTHIEN(03/02/2023)
      */
@@ -158,7 +194,6 @@ export default {
       try {
         var me = this;
         me.showLoading = true;
-        console.log(me.filter)
         axios({
           method: "post",
           url: APIConstant.BASE_URL + APIConstant.GET_JUDGMENT_LIST + `?page=${me.pageNumber}`,

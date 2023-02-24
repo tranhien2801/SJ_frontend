@@ -26,11 +26,10 @@
 
 <script>
 import ArgonButton from "@/components/ArgonButton.vue";
-import * as Utils from "@/utils/index";
 
 export default {
     name: "PopUpWarning",
-    props: ['message', "color"],
+    props: ['message', "color", "user"],
     components: { ArgonButton },
 
     methods: {
@@ -39,7 +38,7 @@ export default {
          * Author: TTHIEN(15/08/2022)
          */
         btnNoOnClick() {
-            this.$emit("hidePopup", false);
+            this.$emit("hidePopupNo", false);
         },
 
 
@@ -48,9 +47,7 @@ export default {
          * Author: TTHIEN (16/08/2022)
          */
         btnYesOnClick() {
-            this.$emit("hidePopup", false);
-            Utils.handlingLogout();
-            this.$router.replace({ name: "Signin" });
+            this.$emit("hidePopupYes", this.user); 
         },
         /**
          * Lấy color + icon phù hợp

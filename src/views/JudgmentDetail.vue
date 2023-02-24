@@ -61,8 +61,6 @@ export default {
             headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) }
           })
         .then((response) => {
-          console.log(me.uid);
-          console.log(response)
           if (response.data.status == 200)
             me.judgment = response.data.data;
             me.judgment.date_issued = DateUtils.formatDate(me.judgment.date_issued);
