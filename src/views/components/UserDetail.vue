@@ -17,8 +17,8 @@
                 </div>
                 <div class="col-md-6">
                     <label for="example-text-input" class="form-control-label">Email</label>
-                    <input type="email" class="form-control" v-model="user.email" ref="txtEmail"
-                        title="Email người dùng không được để trống" @blur="validateRequired" />
+                    <input id="readonly" type="email" class="form-control" v-model="user.email" ref="txtEmail"
+                        title="Email người dùng không được để trống" @blur="validateRequired" readonly/>
                     <div class="name__missing">Email không được để trống</div>
                 </div>
                 <div class="col-md-6" v-show="this.mode === '1'">
@@ -365,5 +365,9 @@ export default {
     top: -20px;
     left: 50%;
     transform: translateX(-50%);
+}
+
+#readonly {
+    background-color: white;
 }
 </style>

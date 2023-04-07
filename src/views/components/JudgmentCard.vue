@@ -235,8 +235,6 @@ export default {
    * Author: TTHIEN (04/02/2023)
    */
     clickCallback(pageNumber) {
-      console.log("chuyển trang");
-      console.log(pageNumber);
       this.pageNumber = pageNumber;
       this.filterJudgments();
     },
@@ -327,9 +325,7 @@ export default {
 </script>
 <style>
 @import url('../../assets/css/components/loading.css');
-
 .panel-heading {
   background-color: #229865;
-  /* border-bottom: dashed 1px #229865; */
 }
 </style>
