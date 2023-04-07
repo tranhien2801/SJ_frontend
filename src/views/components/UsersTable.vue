@@ -185,8 +185,6 @@ export default {
     btnEdit(user) {
       this.userEdit = user;
       this.mode = Data.MODES.Edit;
-      console.log("Truyền dữ liệu");
-      console.log(this.userEdit);
     },
     /**
      * Xóa người dùng
@@ -277,8 +275,6 @@ export default {
      * Author: TTHIEN (01/02/2023)
      */
     clickCallback(pageNumber) {
-      console.log("chuyển trang");
-      console.log(pageNumber);
       this.pageNumber = pageNumber;
       this.filterUsers();
     },
@@ -296,7 +292,6 @@ export default {
 </script>
 
 <style lang="css">
-/* Adopt bootstrap pagination stylesheet. */
 @import "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css";
 
 .custom-tr:hover {
