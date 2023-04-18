@@ -58,7 +58,7 @@
                     </div>
                   </td>
                   <td>
-                    <span class="text-dark text-xs font-weight-bold">{{ user.power }}</span>
+                    <span class="text-dark text-xs font-weight-bold">{{ user.level }}</span>
                   </td>
                   <td class="align-middle text-center text-sm">
                     <span class="badge badge-sm "

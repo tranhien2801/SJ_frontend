@@ -2,7 +2,7 @@
   <main class="mt-0 main-content">
     <section>
       <div class="page-header min-vh-100">
-        <div class="container">
+        <div class="container-fluid">
           <div class="row">
             <div class="mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column ">
               <div
@@ -12,10 +12,9 @@
                   backgroundSize: 'cover'
                 }">
                 <img src="../assets/img/court/Logo_public.png" class="position-relative" />
-
               </div>
 
-              <div class="card card-plain">
+              <div class="card card-plain overflow-hidden my-5">
                 <div class="pb-0 card-header text-start">
                   <h4 class="text-center font-weight-bolder">Đăng nhập</h4>
                   <p class="mb-0">Nhập tên đăng nhập và mật khẩu của bạn</p>
@@ -72,6 +71,9 @@ export default {
     this.$store.state.showSidenav = false;
     this.$store.state.showFooter = false;
     body.classList.remove("bg-gray-100");
+  },
+   mounted() {
+    this.$store.state.isAbsolute = true;
   },
   beforeUnmount() {
     this.$store.state.hideConfigButton = false;

@@ -18,7 +18,7 @@
                 <div class="col-md-6">
                     <label for="example-text-input" class="form-control-label">Email</label>
                     <input id="readonly" type="email" class="form-control" v-model="user.email" ref="txtEmail"
-                        title="Email người dùng không được để trống" @blur="validateRequired" readonly/>
+                        title="Email người dùng không được để trống" @blur="validateRequired" />
                     <div class="name__missing">Email không được để trống</div>
                 </div>
                 <div class="col-md-6" v-show="this.mode === '1'">
@@ -101,7 +101,7 @@ import * as APIConstant from "@/const/api.const";
 import * as Utils from "@/utils/index";
 import * as Data from "@/const/data.const";
 import ArgonButton from "@/components/ArgonButton.vue";
-import Multiselect from '@vueform/multiselect';
+import Multiselect from '@/libs/multiselect';
 import PopUpValidate from "../../components/PopUpValidate.vue";
 
 export default {

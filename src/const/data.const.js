@@ -25,3 +25,8 @@ export const MODES = {
     Signup: "1",
     Edit: "2"
 }
+
+export const SEARCH_RECOMMENDATION = {
+    Search: "1",
+    Recommendation: "2"
+}

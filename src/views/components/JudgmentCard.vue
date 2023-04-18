@@ -67,7 +67,7 @@
               <span class="mb-2 text-xs text-dark text-gradient font-weight-bold">Cấp xét xử:
                 <span class="text-dark text-gradient font-weight-normal">{{ judgment.judgment_level }}</span>
               </span>
-              <span class="mb-2 text-xs text-dark text-gradient font-weight-bold">Loại vụ/việc:
+              <span class="mb-2 text-xs text-dark text-gradient font-weight-bold">Loại vụ việc:
                 <span class="text-dark text-gradient font-weight-normal">{{ judgment.case_type }}</span>
               </span>
               <span class="mb-2 text-xs text-dark text-gradient font-weight-bold">Thông tin về vụ án:
@@ -113,12 +113,11 @@ import * as APIConstant from "@/const/api.const";
 import * as DateUtils from "../../utils/date.utils.js";
 import Paginate from "@/libs/vuejs-paginate-next";
 import Cookies from "js-cookie";
-import Multiselect from '@vueform/multiselect';
+import Multiselect from '@/libs/multiselect';
 import ArgonButton from "@/components/ArgonButton.vue";
 
 export default {
   name: "judgment-card",
-  props: ['response'],
   components: {
     Paginate,
     Multiselect,

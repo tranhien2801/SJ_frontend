@@ -1,4 +1,5 @@
-const BASE_URL = "http://192.168.1.137:8000/";
+const BASE_URL = "http://192.168.1.250:8000/";
+export const BASE_URL_SEARCH = "http://localhost:5000/"
 
 const HEADER_DEFAULT = {
   Accept: "application/json",
@@ -36,7 +37,7 @@ export const GET_JUDGMENT_LEVEL_LIST = "judgment/judgment-level"
 export const LIKED_JUDGMENT = 'judgment/liked';
 export const REPORT_JUDGMENT_ERROR = "judgment/error";
 export const SEND_EMAIL_CONFIRM = "sendMail";
-
+export const GET_JUDGMENT_RECOMMENDED = "recommendation?content=";
 
 
 export const KEY_TOKEN = "accessToken";

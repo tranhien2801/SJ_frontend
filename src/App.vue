@@ -29,7 +29,6 @@ Coded by www.creative-tim.com
     class="min-height-300 position-absolute w-100"
     :class="`${this.$store.state.darkMode ? 'bg-transparent' : 'bg-success'}`"
     v-if="!this.$store.state.showSidenav"
-
     />
   <main
     class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
