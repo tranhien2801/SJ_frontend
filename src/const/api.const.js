@@ -38,6 +38,7 @@ export const LIKED_JUDGMENT = 'judgment/liked';
 export const REPORT_JUDGMENT_ERROR = "judgment/error";
 export const SEND_EMAIL_CONFIRM = "sendMail";
 export const GET_JUDGMENT_RECOMMENDED = "recommendation?content=";
+export const SEARCH_JUDGMENT_BM25 = "judgment/bm25";
 
 
 export const KEY_TOKEN = "accessToken";

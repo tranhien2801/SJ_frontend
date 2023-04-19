@@ -12,8 +12,10 @@
       <div class="row">
       <div class="col-lg-12">
         <div class="row">
-          <div class="col-md-3 fit-content">
-            <JudgmentInfo :judgment="judgment" />
+          <div class="col-md-3">
+            <div style="position: sticky !important;  height: 50vh !important;">
+              <JudgmentInfo :judgment="judgment" />
+            </div>
             <div class="my-3">
               <JudgmentResponse :judgment="judgment" />
             </div>
@@ -23,7 +25,7 @@
               <iframe class="load-pdf" :src="judgment.pdf_viewer"></iframe>
             </div>
           </div>
-          <div class="col-md-3 recommend">
+          <div class="col-md-3">
             <JudgmentRecommended :judgments="judgments" />
           </div>
         </div>
@@ -58,6 +60,7 @@ export default {
   created() {
     this.$store.state.showSidenav = false;
     this.uid = this.$route.params.uid;
+    console.log(this.uid);
     this.detailJudgment();
   },
   beforeUnmount() {
@@ -126,9 +129,7 @@ export default {
 </script>
 <style>
 .load-pdf {
-  min-height: 800px;
+  height: 97vh !important; 
 }
-.recommend{
-  max-height: 1000px;
-}
+
 </style>

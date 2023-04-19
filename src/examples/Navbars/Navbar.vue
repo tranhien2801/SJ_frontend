@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" :class="
+  <nav class="navbar navbar-main navbar-expand-lg px-0 shadow-none border-radius-xl" :class="
     this.$store.state.isRTL ? 'top-0 position-sticky z-index-sticky' : ''
   " v-bind="$attrs" id="navbarBlur" data-scroll="true">
     <div class="px-3 py-1 container-fluid">
@@ -8,28 +8,29 @@
       <div class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4"
         :class="this.$store.state.isRTL ? 'px-0' : 'me-sm-4'" id="navbar">
         <div class="pe-md-3 d-flex align-items-center" :class="this.$store.state.isRTL ? 'me-md-auto' : 'ms-md-auto'">
-          <div class="input-group">
+          <!-- <div class="input-group">
             <span class="input-group-text text-body">
               <i class="fas fa-search" aria-hidden="true"></i>
             </span>
             <input type="text" class="form-control" :placeholder="'Type here...'" />
-          </div>
+          </div> -->
+          
         </div>
         <ul class="navbar-nav justify-content-end">
-          <li class="nav-item d-flex align-items-center" @click="btnSignout">
+          <li class="nav-item d-flex align-items-center cursor" @click="btnSignout">
             <div class="px-0 nav-link font-weight-bold text-white">
               <i class="fa fa-sign-out me-sm-2" aria-hidden="true"></i>
-              <span class="d-sm-inline d-none">Đăng xuất</span>
+              <span class="d-sm-inline d-none text-lg text-monospace">Đăng xuất</span>
             </div>
           </li>
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-            <a href="#" @click="toggleSidebar" class="p-0 nav-link text-white" id="iconNavbarSidenav">
+            <!-- <a href="#" @click="toggleSidebar" class="p-0 nav-link text-white" id="iconNavbarSidenav">
               <div class="sidenav-toggler-inner">
                 <i class="sidenav-toggler-line bg-white"></i>
                 <i class="sidenav-toggler-line bg-white"></i>
                 <i class="sidenav-toggler-line bg-white"></i>
               </div>
-            </a>
+            </a> -->
           </li>
           <li class="px-3 nav-item d-flex align-items-center">
             <a class="p-0 nav-link text-white" @click="toggleConfigurator">

@@ -10,10 +10,10 @@
                 </span>
             </div>
         </div>
-        <div class="d-flex flex-column mx-3 text-success my-4 font-weight-normal">
+        <div class="d-flex flex-column mx-3 text-success my-3 font-weight-normal">
             <div class="d-flex">
                 <div class="d-flex flex-column col-md-6">
-                    <div class="d-flex mb-3">
+                    <div class="d-flex mb-2">
                         <input v-model="judgmentError.error" type="radio"
                             class="radio align-items-center justify-content-center" name="radio-group" value="1">
                         <label for="" class="text-sm font-weight-normal">Lỗi chính tả</label>
@@ -23,8 +23,8 @@
                         <label for="" class="text-sm font-weight-normal">Lỗi font</label>
                     </div>
                 </div>
-                <div class="d-flex flex-column col-md-6 ms-auto mb-3">
-                    <div class="d-flex mb-3">
+                <div class="d-flex flex-column col-md-6 ms-auto mb-2">
+                    <div class="d-flex mb-2">
                         <input v-model="judgmentError.error" type="radio" class="radio" name="radio-group" value="3">
                         <label for="" class="text-sm font-weight-normal">Lỗi nội dung</label>
                     </div>

@@ -1,32 +1,33 @@
 <template>
   <nav aria-label="breadcrumb">
-    <ol
+    <router-link to="/judgment" class="nav-item d-flex align-items-center cursor" @click="btnSignout">
+      <div class="px-0 nav-link font-weight-bold text-white">
+        <img src="../assets/img/court/logo.png" class="icon icon-md me-1" alt="logo" />
+        <span class="d-sm-inline d-none text-lg text-monospace">Trang chủ</span>
+      </div>
+    </router-link>
+
+    <!-- <ol
       class="px-0 pt-1 pb-0 mb-0 bg-transparent breadcrumb"
       :class="`${this.$store.state.isRTL ? '' : ' me-sm-6'} ${this.$store.state.isNavFixed ? 'text-dark' : 'text-white' }`"
     >
-      <li class="text-sm breadcrumb-item">
-        <a
-          v-if="this.$store.state.isRTL"
-          class="opacity-5 ps-2"
-          href="#"
-          :class="this.$store.state.isNavFixed ? 'text-dark' : 'text-white'"
-          >لوحات القيادة</a
-        >
-        <a v-else 
+      <li class="text-lg font-weight-bold breadcrumb-item">
+        <a 
         :class="this.$store.state.isNavFixed ? 'text-dark' : 'text-white'"
-         class="opacity-8" href="#">Pages</a>
+         class="opacity-8" href="#">Trang</a>
       </li>
       <li
-        class="text-sm breadcrumb-item active"
+        class="text-lg font-weight-bold breadcrumb-item active"
         :class="this.$store.state.isNavFixed ? 'text-dark' : 'text-white'"
         aria-current="page"
       >
         {{ currentPage }}
       </li>
-    </ol>
-    <h6 class="mb-0 font-weight-bolder" :class="this.$store.state.isNavFixed ? 'text-dark' : 'text-white'">
+    </ol> -->
+
+    <!-- <h6 class="mb-0 font-weight-bolder" :class="this.$store.state.isNavFixed ? 'text-dark' : 'text-white'">
       {{ currentPage }}
-    </h6>
+    </h6> -->
   </nav>
 </template>
 

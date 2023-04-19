@@ -1,10 +1,10 @@
 <template>
-    <div class="">
+    <div class="" >
         <div class="card overflow-auto">
-            <div class="card-header pb-0">
-                <h6 class="mb-0 text-success">Bản án/Quyết định đề xuất</h6>
+            <div class="card-header pb-0 d-flex ">
+                <h6 class="mb-0 text-success align-items-center justify-content-center" style="text-align: center; !important">Bản án/Quyết định đề xuất</h6>
             </div>
-            <div class="card-body p-3 overflow-auto ">
+            <div class="card-body p-3 overflow-auto" style="position: sticky !important; height: 90vh;">
                 <ul class="list-group">
                     <li class="list-group-item border-0 d-flex mb-3 p-3 bg-gray-100 border-radius-lg"
                         v-for="judgment in judgments" :key="judgment.uid">

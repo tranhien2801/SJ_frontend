@@ -32,7 +32,7 @@
                     <argon-switch id="rememberMe">Lưu thông tin đăng nhập</argon-switch>
 
                     <div class="text-center">
-                      <argon-button class="mt-4" variant="gradient" color="success" fullWidth size="lg"
+                      <argon-button class="mt-4" tabindex="3" variant="gradient" color="success" fullWidth size="lg"
                         @click="btnSignIn">Đăng nhập</argon-button>
                     </div>
                   </div>
