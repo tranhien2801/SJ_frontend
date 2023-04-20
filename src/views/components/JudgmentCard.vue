@@ -16,7 +16,7 @@
               <i class="fas fa-search" aria-hidden="true"></i>
             </span>
             <input v-model="filter.judgment_content" type="text" class="form-control"
-              :placeholder="'Nhập số bản án/quyết định'" />
+              :placeholder="'Nhập số hiệu/nội dung'" />
           </div>
         </div>
         <span class="mb-3 text-sm font-weight-bold">
@@ -43,11 +43,11 @@
         </span>
         <span class="mb-3 text-sm font-weight-bold">
           Từ ngày
-          <input v-model="filter.dateFrom" type="date" class="form-control" />
+          <input v-model="filter.date_from" type="date" class="form-control" />
         </span>
         <span class="mb-3 text-sm font-weight-bold">
           Đến ngày
-          <input v-model="filter.dateTo" type="date" class="form-control" />
+          <input v-model="filter.date_to" type="date" class="form-control" />
         </span>
         <span class="mb-3 text-sm font-weight-bold">
           <div class="form-check"> <input v-model="filter.precedent" type="checkbox" class="form-check-input" value="1" />
@@ -72,7 +72,7 @@
       <div class="card-body p-3 fit-content" style="position: sticky; height: 100vh;">
         <ul class="list-group" style="overflow: auto; height: 96vh">
           <li class="list-group-item border-0 d-flex mb-3 p-3 bg-gray-100 border-radius-lg" v-for="judgment in judgments"
-            :key="judgment.uid">
+            :key="judgment.uid" @dblclick="viewJudgmentDetail(judgment)">
             <div class="d-flex flex-column mx-2">
               <h6 class="mb-2 text-sm text-dark text-gradient font-weight-bold">{{ judgment.title }}
                 <a class="text-info text-gradient px-3 mb-0" @click="likeJudgment(judgment.uid)">
@@ -101,7 +101,8 @@
                 @click="viewJudgmentDetail(judgment)">
                 <i class="far fa-eye me-2" aria-hidden="true"></i>{{ judgment.count_eyes }}
               </a>
-              <a class="btn btn-link text-success text-gradient px-3 mb-0" :href="judgment.file_download">
+              <a class="btn btn-link text-success text-gradient px-3 mb-0" :href="judgment.file_download"
+                @click="downloadJudgment(judgment.uid)">
                 <i class="fas fa-thin fa-download text-dark me-2" aria-hidden="true"></i>{{ judgment.count_download }}
               </a>
             </div>
@@ -150,11 +151,6 @@ export default {
       showLoading: true,
       uid: null,
       filter: {
-        judgment_content: "",
-        court_level: "",
-        judgment_level: "",
-        type_document: "",
-        case_type: ""
       },
       typeDocuments: [
         { value: "Bản án" },
@@ -252,22 +248,22 @@ export default {
      * Tìm kiếm bản án theo thuật toán BM25
      */
     searchBM25() {
-      try {      
-        console.log(APIConstant.BASE_URL_SEARCH + APIConstant.SEARCH_JUDGMENT_BM25);
+      try {
+        console.log(this.filter)
         axios({
           method: "post",
           url: APIConstant.BASE_URL_SEARCH + APIConstant.SEARCH_JUDGMENT_BM25,
           data: this.filter
         })
-        .then((response) => {
-          console.log(response);
-          this.showLoading = false;
-          this.totalRecord = response.data.total;
-          this.totalPage = response.data.total_page;
-          this.pageNumber = response.data.page;
-          this.judgments = response.data.data;
-          this.convertJudgmentTitle();
-        })
+          .then((response) => {
+            console.log(response);
+            this.showLoading = false;
+            this.totalRecord = response.data.total;
+            this.totalPage = response.data.total_page;
+            this.pageNumber = response.data.page;
+            this.judgments = response.data.data;
+            this.convertJudgmentTitle();
+          })
           .catch((error) => {
             console.log(error);
           })
@@ -302,12 +298,49 @@ export default {
      * Author: TTHIEN (06/02/2023)
      */
     viewJudgmentDetail(judgment) {
-      var uid = judgment.uid;
-      this.$router.replace({
-        name: "JudgmentDetail",
-        params: { uid }
-      })
-      console.log(uid);
+      try {
+        var uid = judgment.uid;
+        axios({
+          method: "get",
+          url: APIConstant.BASE_URL + APIConstant.GET_JUDGMENT + uid + "/view",
+          headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+        })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+
+        this.$router.replace({
+          name: "JudgmentDetail",
+          params: { uid }
+        })
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * Tải bản án
+     * Author: TTHIEN(20/04/2023)
+     */
+    downloadJudgment(uid) {
+      try {
+        axios({
+          method: "get",
+          url: APIConstant.BASE_URL + APIConstant.GET_JUDGMENT + uid + "/download",
+          headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+        })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     /**

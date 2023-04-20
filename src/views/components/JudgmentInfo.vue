@@ -13,7 +13,7 @@
                 <a class="btn btn-link text-success text-gradient px-3 mb-0" href="javascript:;">
                     <i class="far fa-eye me-2" aria-hidden="true"></i>{{ judgment.count_eyes }} 
                 </a>
-                <a class="btn btn-link text-success text-gradient px-3 mb-0" :href="judgment.file_download">
+                <a class="btn btn-link text-success text-gradient px-3 mb-0" :href="judgment.file_download"  @click="downloadJudgment(judgment.uid)">
                     <i class="fas fa-thin fa-download text-dark me-2" aria-hidden="true"></i>{{ judgment.count_download }}
                 </a>
             </div>
@@ -45,10 +45,36 @@
 </template>
 
 <script>
-
+import axios from "axios";
+import * as APIConstant from "@/const/api.const";
+import Cookies from "js-cookie";
 export default {
     name: "JudgmentInfo",
     props: ["judgment"],
+    methods: {
+         /**
+     * Tải bản án
+     * Author: TTHIEN(20/04/2023)
+     */
+     downloadJudgment(uid) {
+      try {
+        axios({
+          method: "get",
+          url: APIConstant.BASE_URL + APIConstant.GET_JUDGMENT + uid + "/download",
+          headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+        })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+
+      } catch (error) {
+        console.log(error);
+      }
+     },
+    }
 };
 </script>
 <style scoped>

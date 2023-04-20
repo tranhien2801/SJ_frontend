@@ -26,7 +26,7 @@
             </div>
           </div>
           <div class="col-md-3">
-            <JudgmentRecommended :judgments="judgments" />
+            <JudgmentRecommended :judgments="judgments" @loadPage="loadPage"/>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default {
     return {
       uid: '0003160bd2d74bc3aa006a2f66ed78f9',
       judgment: {},
-      judgments: []
+      judgments: [],
     }
   },
   components: {
@@ -92,7 +92,17 @@ export default {
         })
     },
     /**
-     * 
+     * Load lại trang sau khi chọn bản án tương tự
+     * Author: TTHIEN(20/04/2023)
+     */
+    loadPage(jud) {
+      this.uid = jud.uid;
+      this.detailJudgment()
+    },
+
+    /**
+     * Lấy danh sách bản án gợi ý
+     * Author: TTHIEN(20/04/2023)
      */
     judgmentRecommended() {
       try {
@@ -124,6 +134,7 @@ export default {
           + " về " + judgment.judgment_name;
       })
     },
+   
   }
 };
 </script>

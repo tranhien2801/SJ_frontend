@@ -6,8 +6,8 @@
             </div>
             <div class="card-body p-3 overflow-auto" style="position: sticky !important; height: 90vh;">
                 <ul class="list-group">
-                    <li class="list-group-item border-0 d-flex mb-3 p-3 bg-gray-100 border-radius-lg"
-                        v-for="judgment in judgments" :key="judgment.uid">
+                    <li class="list-group-item border-0 d-flex mb-3 p-3 bg-gray-100 border-radius-lg cursor"
+                        v-for="judgment in judgments" :key="judgment.uid" @dblclick="viewJudgmentDetail(judgment)">
                         <div class="d-flex flex-column mx-2">
                             <h6 class="mb-2 text-sm text-dark text-gradient font-weight-bold">{{ judgment.title }}
                             </h6>
@@ -25,7 +25,9 @@
 </template>
 
 <script>
-
+import axios from "axios";
+import * as APIConstant from "@/const/api.const";
+import Cookies from "js-cookie";
 
 export default {
     name: "judgment-recommended",
@@ -42,7 +44,34 @@ export default {
         this.$store.state.isAbsolute = true;
     },
     methods: {
-
+        /**
+     * Chuyển trang để xem chi tiết bản án
+     * Author: TTHIEN (06/02/2023)
+     */
+    viewJudgmentDetail(judgment) {
+      try {
+        var uid = judgment.uid;
+        console.log("Bản án tương tự" + uid)
+        axios({
+          method: "get",
+          url: APIConstant.BASE_URL + APIConstant.GET_JUDGMENT + uid + "/view",
+          headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+        })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          this.$emit("loadPage", judgment);
+        this.$router.replace({
+          name: "JudgmentDetail",
+          params: { uid }
+        })
+      } catch (error) {
+        console.log(error);
+      }
+    },
     }
 }
 </script>
