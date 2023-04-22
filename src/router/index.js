@@ -7,6 +7,8 @@ import Profile from "../views/Profile.vue";
 import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
 import JudgmentDetail from "../views/JudgmentDetail.vue";
+import JudgmentHistory from "../views/JudgmentHistory.vue";
+import JudgmentLiked from "../views/JudgmentLiked.vue";
 
 const routes = [
   {
@@ -38,6 +40,16 @@ const routes = [
     path: "/judgment",
     name: "Judgment",
     component: Judgment,
+  },
+  {
+    path: "/history",
+    name: "JudgmentHistory",
+    component: JudgmentHistory,
+  },
+  {
+    path: "/liked",
+    name: "JudgmentLiked",
+    component: JudgmentLiked,
   },
   {
     path: "/judgment-detail/:uid",

@@ -71,12 +71,13 @@
       </div>
       <div class="card-body p-3 fit-content" style="position: sticky; height: 100vh;">
         <ul class="list-group" style="overflow: auto; height: 96vh">
-          <li class="list-group-item border-0 d-flex mb-3 p-3 bg-gray-100 border-radius-lg" v-for="judgment in judgments"
+          <li class="list-group-item border-0 d-flex mb-3 p-3 bg-gray-100 border-radius-lg cursor" v-for="judgment in judgments"
             :key="judgment.uid" @dblclick="viewJudgmentDetail(judgment)">
             <div class="d-flex flex-column mx-2">
               <h6 class="mb-2 text-sm text-dark text-gradient font-weight-bold">{{ judgment.title }}
-                <a class="text-info text-gradient px-3 mb-0" @click="likeJudgment(judgment.uid)">
-                  <i class="fa" :class="getLikedJudgment(judgment)" aria-hidden="true"></i>
+                <a class="text-info text-gradient px-3 mb-0 text-success" @click="likeJudgment(judgment)">
+                  <i v-if="judgment.isLiked" class="fa fa-thumbs-up"  aria-hidden="true"></i>
+                  <i v-else class="fa fa-thumbs-o-up"  aria-hidden="true"></i>
                 </a>
               </h6>
               <span class="mb-2 text-xs text-dark text-gradient font-weight-bold">Quan hệ pháp luật:
@@ -151,6 +152,15 @@ export default {
       showLoading: true,
       uid: null,
       filter: {
+        judgment_content: "",
+        judgment_level: "",
+        court_level: "",
+        type_document: "",
+        case_type: "",
+        date_from: "",
+        date_to: "",
+        vote: "",
+        precedent: ""
       },
       typeDocuments: [
         { value: "Bản án" },
@@ -177,29 +187,35 @@ export default {
      * Lấy dữ liệu người dùng đã like bản án hay chưa?
      * Author: TTHIEN(23/02/2023)
      */
-    getLikedJudgment: (judgment) => {
-      if (judgment.user_uid == Cookies.get(APIConstant.USER_ID)) {
-        return "fa-thumbs-up";
-      } else {
-        return "fa-thumbs-o-up";
-      }
+    getLikedJudgment() {
+      console.log(this.judgments)
+      console.log(APIConstant.USER_ID)
+      this.judgments.forEach(function (judgment) {
+        if (judgment.user_uid == Cookies.get(APIConstant.USER_ID)) {
+          console.log("Người dùng đã like bản án")
+          judgment.isLiked = true;
+        } else {
+          judgment.isLiked = false;
+        }
+      })
     },
     /**
      * Liked/Disliked bản án
      * Author: TTHIEN(23/02/2023)
      */
-    likeJudgment(judgment_uid) {
+    likeJudgment(judgment) {
       axios({
         method: "post",
         url: APIConstant.BASE_URL + APIConstant.LIKED_JUDGMENT,
         headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
         data: {
           user_uid: Cookies.get(APIConstant.USER_ID),
-          judgment_uid: judgment_uid
+          judgment_uid: judgment.uid
         }
       })
         .then((response) => {
           console.log(response);
+          judgment.isLiked = !judgment.isLiked;
         })
         .catch((error) => {
           console.log(error);
@@ -213,7 +229,6 @@ export default {
       try {
         var me = this;
         me.showLoading = true;
-        console.log(me.filter)
         axios({
           method: "post",
           url: APIConstant.BASE_URL + APIConstant.GET_JUDGMENT_LIST + `?page=${me.pageNumber}`,
@@ -226,15 +241,14 @@ export default {
             me.totalRecord = response.data.total;
             console.log(me.totalRecord)
             if (me.totalRecord == 0 && me.filter.judgment_content != null) {
-              console.log("Tìm kiếm theo BM25...")
               this.searchBM25();
             } else {
-              console.log("Tìm kiếm theo số hiệu bản án")
               me.totalPage = response.data.total_page;
               me.pageNumber = response.data.page;
               me.judgments = response.data.data;
               me.convertJudgmentTitle();
             }
+            this.getLikedJudgment();
           })
           .catch((error) => {
             console.log(error);

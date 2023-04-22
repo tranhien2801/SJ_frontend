@@ -246,8 +246,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       class: normalizeClass([$props.pageClass, $options.firstPageSelected() ? $props.disabledClass : ""])
     }, [
       createElementVNode("a", {
-        onClick: _cache[0] || (_cache[0] = ($event) => $options.selectFirstPage()),
-        onKeyup: _cache[1] || (_cache[1] = withKeys(($event) => $options.selectFirstPage(), ["enter"])),
+        onClick: _cache[0] || (_cache[0] = () => $options.selectFirstPage()),
+        onKeyup: _cache[1] || (_cache[1] = withKeys(() => $options.selectFirstPage(), ["enter"])),
         class: normalizeClass($props.pageLinkClass),
         tabindex: $options.firstPageSelected() ? -1 : 0,
         innerHTML: $props.firstButtonText
@@ -258,8 +258,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       class: normalizeClass([$props.prevClass, $options.firstPageSelected() ? $props.disabledClass : ""])
     }, [
       createElementVNode("a", {
-        onClick: _cache[2] || (_cache[2] = ($event) => $options.prevPage()),
-        onKeyup: _cache[3] || (_cache[3] = withKeys(($event) => $options.prevPage(), ["enter"])),
+        onClick: _cache[2] || (_cache[2] = () => $options.prevPage()),
+        onKeyup: _cache[3] || (_cache[3] = withKeys(() => $options.prevPage(), ["enter"])),
         class: normalizeClass($props.prevLinkClass),
         tabindex: $options.firstPageSelected() ? -1 : 0,
         innerHTML: $props.prevText
@@ -284,8 +284,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
           tabindex: "0"
         }, toDisplayString(page.content), 3)) : (openBlock(), createElementBlock("a", {
           key: 2,
-          onClick: ($event) => $options.handlePageSelected(page.index + 1),
-          onKeyup: withKeys(($event) => $options.handlePageSelected(page.index + 1), ["enter"]),
+          onClick: () => $options.handlePageSelected(page.index + 1),
+          onKeyup: withKeys(() => $options.handlePageSelected(page.index + 1), ["enter"]),
           class: normalizeClass($props.pageLinkClass),
           tabindex: "0"
         }, toDisplayString(page.content), 43, _hoisted_3))
@@ -296,8 +296,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       class: normalizeClass([$props.nextClass, $options.lastPageSelected() ? $props.disabledClass : ""])
     }, [
       createElementVNode("a", {
-        onClick: _cache[4] || (_cache[4] = ($event) => $options.nextPage()),
-        onKeyup: _cache[5] || (_cache[5] = withKeys(($event) => $options.nextPage(), ["enter"])),
+        onClick: _cache[4] || (_cache[4] = () => $options.nextPage()),
+        onKeyup: _cache[5] || (_cache[5] = withKeys(() => $options.nextPage(), ["enter"])),
         class: normalizeClass($props.nextLinkClass),
         tabindex: $options.lastPageSelected() ? -1 : 0,
         innerHTML: $props.nextText
@@ -308,8 +308,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       class: normalizeClass([$props.pageClass, $options.lastPageSelected() ? $props.disabledClass : ""])
     }, [
       createElementVNode("a", {
-        onClick: _cache[6] || (_cache[6] = ($event) => $options.selectLastPage()),
-        onKeyup: _cache[7] || (_cache[7] = withKeys(($event) => $options.selectLastPage(), ["enter"])),
+        onClick: _cache[6] || (_cache[6] = () => $options.selectLastPage()),
+        onKeyup: _cache[7] || (_cache[7] = withKeys(() => $options.selectLastPage(), ["enter"])),
         class: normalizeClass($props.pageLinkClass),
         tabindex: $options.lastPageSelected() ? -1 : 0,
         innerHTML: $props.lastButtonText
@@ -321,16 +321,16 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [
     $props.firstLastButton ? (openBlock(), createElementBlock("a", {
       key: 0,
-      onClick: _cache[8] || (_cache[8] = ($event) => $options.selectFirstPage()),
-      onKeyup: _cache[9] || (_cache[9] = withKeys(($event) => $options.selectFirstPage(), ["enter"])),
+      onClick: _cache[8] || (_cache[8] = () => $options.selectFirstPage()),
+      onKeyup: _cache[9] || (_cache[9] = withKeys(() => $options.selectFirstPage(), ["enter"])),
       class: normalizeClass([$props.pageLinkClass, $options.firstPageSelected() ? $props.disabledClass : ""]),
       tabindex: "0",
       innerHTML: $props.firstButtonText
     }, null, 42, _hoisted_6)) : createCommentVNode("", true),
     !($options.firstPageSelected() && $props.hidePrevNext) ? (openBlock(), createElementBlock("a", {
       key: 1,
-      onClick: _cache[10] || (_cache[10] = ($event) => $options.prevPage()),
-      onKeyup: _cache[11] || (_cache[11] = withKeys(($event) => $options.prevPage(), ["enter"])),
+      onClick: _cache[10] || (_cache[10] = () => $options.prevPage()),
+      onKeyup: _cache[11] || (_cache[11] = withKeys(() => $options.prevPage(), ["enter"])),
       class: normalizeClass([$props.prevLinkClass, $options.firstPageSelected() ? $props.disabledClass : ""]),
       tabindex: "0",
       innerHTML: $props.prevText
@@ -351,8 +351,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
           tabindex: "0"
         }, toDisplayString(page.content), 3)) : (openBlock(), createElementBlock("a", {
           key: page.index,
-          onClick: ($event) => $options.handlePageSelected(page.index + 1),
-          onKeyup: withKeys(($event) => $options.handlePageSelected(page.index + 1), ["enter"]),
+          onClick: () => $options.handlePageSelected(page.index + 1),
+          onKeyup: withKeys(() => $options.handlePageSelected(page.index + 1), ["enter"]),
           class: normalizeClass([$props.pageLinkClass, page.selected ? $props.activeClass : ""]),
           tabindex: "0"
         }, toDisplayString(page.content), 43, _hoisted_8))
@@ -360,16 +360,16 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     }), 256)),
     !($options.lastPageSelected() && $props.hidePrevNext) ? (openBlock(), createElementBlock("a", {
       key: 2,
-      onClick: _cache[12] || (_cache[12] = ($event) => $options.nextPage()),
-      onKeyup: _cache[13] || (_cache[13] = withKeys(($event) => $options.nextPage(), ["enter"])),
+      onClick: _cache[12] || (_cache[12] = () => $options.nextPage()),
+      onKeyup: _cache[13] || (_cache[13] = withKeys(() => $options.nextPage(), ["enter"])),
       class: normalizeClass([$props.nextLinkClass, $options.lastPageSelected() ? $props.disabledClass : ""]),
       tabindex: "0",
       innerHTML: $props.nextText
     }, null, 42, _hoisted_9)) : createCommentVNode("", true),
     $props.firstLastButton ? (openBlock(), createElementBlock("a", {
       key: 3,
-      onClick: _cache[14] || (_cache[14] = ($event) => $options.selectLastPage()),
-      onKeyup: _cache[15] || (_cache[15] = withKeys(($event) => $options.selectLastPage(), ["enter"])),
+      onClick: _cache[14] || (_cache[14] = () => $options.selectLastPage()),
+      onKeyup: _cache[15] || (_cache[15] = withKeys(() => $options.selectLastPage(), ["enter"])),
       class: normalizeClass([$props.pageLinkClass, $options.lastPageSelected() ? $props.disabledClass : ""]),
       tabindex: "0",
       innerHTML: $props.lastButtonText

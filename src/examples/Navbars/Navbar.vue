@@ -1,46 +1,47 @@
 <template>
-  <nav class="navbar navbar-main navbar-expand-lg px-0 shadow-none border-radius-xl" :class="
-    this.$store.state.isRTL ? 'top-0 position-sticky z-index-sticky' : ''
-  " v-bind="$attrs" id="navbarBlur" data-scroll="true">
-    <div class="px-3 py-1 container-fluid">
+  <nav class="navbar navbar-main navbar-expand-lg px-0 shadow-none border-radius-xl" v-bind="$attrs" id="navbarBlur" data-scroll="true">
+    <div class="px-0 py-0 container-fluid">
       <breadcrumbs :currentPage="currentRouteName" textWhite="text-white" />
 
       <div class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4"
         :class="this.$store.state.isRTL ? 'px-0' : 'me-sm-4'" id="navbar">
-        <div class="pe-md-3 d-flex align-items-center" :class="this.$store.state.isRTL ? 'me-md-auto' : 'ms-md-auto'">
-          <!-- <div class="input-group">
-            <span class="input-group-text text-body">
-              <i class="fas fa-search" aria-hidden="true"></i>
-            </span>
-            <input type="text" class="form-control" :placeholder="'Type here...'" />
-          </div> -->
-          
+        <div class="pe-md-3 d-flex align-items-center ms-md-auto" >          
         </div>
         <ul class="navbar-nav justify-content-end">
-          <li class="nav-item d-flex align-items-center cursor" @click="btnSignout">
-            <div class="px-0 nav-link font-weight-bold text-white">
-              <i class="fa fa-sign-out me-sm-2" aria-hidden="true"></i>
-              <span class="d-sm-inline d-none text-lg text-monospace">Đăng xuất</span>
+          <li class="px-1 nav-item d-flex align-items-center cursor" @click="btnSignout">
+            <div class="p-0 nav-link font-weight-bold text-white" v-tooltip="'Đăng xuất'">
+              <i class="fa fa-size fa-sign-out ms-auto" aria-hidden="true"></i>
             </div>
           </li>
-          <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-            <!-- <a href="#" @click="toggleSidebar" class="p-0 nav-link text-white" id="iconNavbarSidenav">
+         
+          <!-- <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+            <a href="#" @click="toggleSidebar" class="p-0 nav-link text-white" id="iconNavbarSidenav">
               <div class="sidenav-toggler-inner">
                 <i class="sidenav-toggler-line bg-white"></i>
                 <i class="sidenav-toggler-line bg-white"></i>
                 <i class="sidenav-toggler-line bg-white"></i>
               </div>
-            </a> -->
+            </a>
+          </li> -->
+          <li class="px-2 nav-item d-flex align-items-center">
+            <router-link to="/history" class="p-0 nav-link text-white">
+              <i class="cursor-pointer fa fa-size fa-history"></i>
+            </router-link>
           </li>
-          <li class="px-3 nav-item d-flex align-items-center">
+          <li class="px-1 nav-item d-flex align-items-center">
+            <router-link to="/liked" class="p-0 nav-link text-white">
+              <i class="cursor-pointer fa fa-size fa-heart"></i>
+            </router-link>
+          </li>
+          <li class="px-2 nav-item d-flex align-items-center">
             <a class="p-0 nav-link text-white" @click="toggleConfigurator">
-              <i class="cursor-pointer fa fa-cog fixed-plugin-button-nav"></i>
+              <i class="cursor-pointer fa fa-size fa-cog fixed-plugin-button-nav"></i>
             </a>
           </li>
-          <li class="nav-item dropdown d-flex align-items-center" :class="this.$store.state.isRTL ? 'ps-2' : 'pe-2'">
+          <li class="px-1 nav-item dropdown d-flex align-items-center" :class="this.$store.state.isRTL ? 'ps-2' : 'pe-2'">
             <a href="#" class="p-0 nav-link text-white" :class="[showMenu ? 'show' : '']" id="dropdownMenuButton"
               data-bs-toggle="dropdown" aria-expanded="false" @click="showMenu = !showMenu">
-              <i class="cursor-pointer fa fa-bell"></i>
+              <i class="cursor-pointer fa fa-size fa-bell"></i>
             </a>
             <ul class="px-2 py-3 dropdown-menu dropdown-menu-end me-sm-n4" :class="showMenu ? 'show' : ''"
               aria-labelledby="dropdownMenuButton">
@@ -131,6 +132,7 @@ import Breadcrumbs from "../Breadcrumbs.vue";
 import { mapMutations, mapActions } from "vuex";
 import PopUpWarning from "../../components/PopUpWarning.vue";
 import * as Utils from "@/utils/index";
+import VTooltip from 'v-tooltip';
 
 export default {
   name: "navbar",
@@ -172,6 +174,7 @@ export default {
     Breadcrumbs,
     PopUpWarning,
   },
+  directives: { VTooltip },
   computed: {
     currentRouteName() {
       return this.$route.name;
@@ -179,3 +182,8 @@ export default {
   }
 };
 </script>
+<style>
+.fa-size::before {
+  font-size: 20px;
+}
+</style>
