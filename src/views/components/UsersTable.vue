@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-7 ms-5">
-      <div class="card">
+      <div class="card"  style="padding-left: 10px !important;">
         <div class="card-header pb-0">
           <h6>Danh sách người dùng hệ thống</h6>
         </div>
@@ -10,7 +10,7 @@
             <table class="table align-items-center mb-0">
               <thead>
                 <tr>
-                  <th>
+                  <th style="padding: 10px !important;">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" v-model="selectedAll" />
                       <!-- <label :for="id" class="custom-control-label">
@@ -38,8 +38,8 @@
                   <th class="text-dark  "></th>
                 </tr>
               </thead>
-              <tbody>
-                <tr v-for="user in users" :key="user.uid" class="custom-tr">
+              <tbody >
+                <tr v-for="user in users" :key="user.uid" class="custom-tr" @dblclick="btnEdit(user)">
                   <td>
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" v-model="selected" :value="user.uid" />

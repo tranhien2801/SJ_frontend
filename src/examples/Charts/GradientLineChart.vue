@@ -2,11 +2,7 @@
   <div class="card">
     <div class="pb-0 card-header mb-0">
       <h6>{{ title }}</h6>
-      <p class="text-sm">
-        <i class="fa fa-arrow-up text-success"></i>
-        <span class="font-weight-bold">{{detail1}}</span>
-        {{detail2}}
-      </p>
+      
     </div>
     <div class="p-3 card-body">
       <div class="chart">
@@ -18,6 +14,8 @@
 
 <script>
 import Chart from "chart.js/auto";
+import axios from "axios";
+import * as APIConstant from "@/const/api.const";
 
 export default {
   name: "gradient-line-chart",
@@ -25,43 +23,53 @@ export default {
   props: {
     title: {
       type: String,
-      default: "Sales overview",
+      default: "Bản án đã crawl",
     },
-    detail1: {
-      type: String,
-      default: "4% more",
-    },
-    detail2: {
-      type: String,
-      default: "in 2021",
-    },
+  },
+  data() {
+    return {
+      data: []
+    }
+  },
+  created() {
+    // this.getDataChart();
+  },
+  methods: {
+    /**
+     * Lấy dữ liệu cho biểu đồ
+     * Author: TTHIEN(04/05/2023)
+     */
+    getDataChart() {
+      try {
+        return axios.get(APIConstant.BASE_URL + APIConstant.GET_DATA_CHART)
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
 
   mounted() {
-    var ctx1 = document.getElementById("chart-line").getContext("2d");
+    this.getDataChart().then((response) => {
+      this.data = response.data.data;
+      var ctx1 = document.getElementById("chart-line").getContext("2d");
 
-    var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke1.addColorStop(1, "rgba(94, 114, 228, 0.2)");
-    gradientStroke1.addColorStop(0.2, "rgba(94, 114, 228, 0.0)");
-    gradientStroke1.addColorStop(0, "rgba(94, 114, 228, 0)");
     new Chart(ctx1, {
-      type: "line",
+      type: "bar",
       data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        labels: ["Hình sự", "Dân sự", "Kinh doanh thương mại", "Hôn nhân và gia đình", "Quyết định áp dụng biện pháp xử lý hành chính", "Hành chính", "Quyết định tuyên bố phá sản", "Lao động"],
         datasets: [
           {
-            label: "Mobile apps",
+            label: "Bản án/Quyết định",
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
             borderColor: "#4BB543 ",
-            backgroundColor: gradientStroke1,
+            backgroundColor: "#4BB543 ",
             // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
+            // borderWidth: 30,
             fill: true,
-            data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-            maxBarThickness: 6,
+            data: this.data,
+            maxBarThickness: 35,
           },
         ],
       },
@@ -121,6 +129,8 @@ export default {
         },
       },
     });
+    })
+    
   },
 };
 </script>

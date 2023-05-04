@@ -25,7 +25,7 @@
               <iframe class="load-pdf" :src="judgment.pdf_viewer"></iframe>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3 my-3">
             <JudgmentRecommended :judgments="judgments" @loadPage="loadPage"/>
           </div>
         </div>

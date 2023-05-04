@@ -1,19 +1,20 @@
 <template>
-  <nav class="navbar navbar-main navbar-expand-lg px-0 shadow-none border-radius-xl" v-bind="$attrs" id="navbarBlur" data-scroll="true">
+  <nav class="navbar navbar-main navbar-expand-lg px-0 shadow-none border-radius-xl" v-bind="$attrs" id="navbarBlur"
+    data-scroll="true">
     <div class="px-0 py-0 container-fluid">
       <breadcrumbs :currentPage="currentRouteName" textWhite="text-white" />
 
       <div class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4"
         :class="this.$store.state.isRTL ? 'px-0' : 'me-sm-4'" id="navbar">
-        <div class="pe-md-3 d-flex align-items-center ms-md-auto" >          
+        <div class="pe-md-3 d-flex align-items-center ms-md-auto">
         </div>
         <ul class="navbar-nav justify-content-end">
           <li class="px-1 nav-item d-flex align-items-center cursor" @click="btnSignout">
-            <div class="p-0 nav-link font-weight-bold text-white" v-tooltip="'Đăng xuất'">
-              <i class="fa fa-size fa-sign-out ms-auto" aria-hidden="true"></i>
+            <div class="p-0 nav-link font-weight-bold text-white hover-element">
+              <i class="fa fa-size fa-sign-out ms-auto" aria-hidden="true" ref="signOut"></i>
             </div>
           </li>
-         
+
           <!-- <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
             <a href="#" @click="toggleSidebar" class="p-0 nav-link text-white" id="iconNavbarSidenav">
               <div class="sidenav-toggler-inner">
@@ -25,17 +26,17 @@
           </li> -->
           <li class="px-2 nav-item d-flex align-items-center">
             <router-link to="/history" class="p-0 nav-link text-white">
-              <i class="cursor-pointer fa fa-size fa-history"></i>
+              <i class="cursor-pointer fa fa-size fa-history" ref="history"></i>
             </router-link>
           </li>
           <li class="px-1 nav-item d-flex align-items-center">
             <router-link to="/liked" class="p-0 nav-link text-white">
-              <i class="cursor-pointer fa fa-size fa-heart"></i>
+              <i class="cursor-pointer fa fa-size fa-heart" ref="heart"></i>
             </router-link>
           </li>
           <li class="px-2 nav-item d-flex align-items-center">
             <a class="p-0 nav-link text-white" @click="toggleConfigurator">
-              <i class="cursor-pointer fa fa-size fa-cog fixed-plugin-button-nav"></i>
+              <i class="cursor-pointer fa fa-size fa-cog fixed-plugin-button-nav" ref="config"></i>
             </a>
           </li>
           <li class="px-1 nav-item dropdown d-flex align-items-center" :class="this.$store.state.isRTL ? 'ps-2' : 'pe-2'">
@@ -132,7 +133,7 @@ import Breadcrumbs from "../Breadcrumbs.vue";
 import { mapMutations, mapActions } from "vuex";
 import PopUpWarning from "../../components/PopUpWarning.vue";
 import * as Utils from "@/utils/index";
-import VTooltip from 'v-tooltip';
+import tippy from 'tippy.js';
 
 export default {
   name: "navbar",
@@ -147,6 +148,28 @@ export default {
   props: ["minNav", "textWhite"],
   created() {
     this.minNav;
+  },
+  mounted() {
+    tippy(this.$refs.signOut, {
+      content: 'Đăng xuất',
+      placement: 'top',
+      animation: 'scale',
+    });
+    tippy(this.$refs.history, {
+      content: 'Bản án đã xem',
+      placement: 'top',
+      animation: 'scale',
+    });
+    tippy(this.$refs.heart, {
+      content: 'Bản án yêu thích',
+      placement: 'top',
+      animation: 'scale',
+    });
+    tippy(this.$refs.config, {
+      content: 'Thay đổi mật khẩu',
+      placement: 'top',
+      animation: 'scale',
+    });
   },
   methods: {
     ...mapMutations(["navbarMinimize", "toggleConfigurator"]),
@@ -174,7 +197,6 @@ export default {
     Breadcrumbs,
     PopUpWarning,
   },
-  directives: { VTooltip },
   computed: {
     currentRouteName() {
       return this.$route.name;
@@ -185,5 +207,10 @@ export default {
 <style>
 .fa-size::before {
   font-size: 20px;
+}
+
+.tippy-box {
+  color: #fff;
+  font-size: 13px;
 }
 </style>

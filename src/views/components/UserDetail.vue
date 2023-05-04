@@ -113,6 +113,7 @@ export default {
     data() {
         return {
             user: {},
+            user1: {},
             units: [],
             caseTypes: [],
             levels: Data.LEVELS,
@@ -127,11 +128,12 @@ export default {
     created() {
         this.getUnits();
         this.getCaseTypes();
-
+        
     },
     updated() {
-        if (this.$props.userEdit) {
+        if (this.userEdit) {
             this.user = this.userEdit;
+            console.log("Lấy dữ liệu.....")
         }
     },
     methods: {

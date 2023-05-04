@@ -5,12 +5,10 @@
         <div class="row">
           <div class="col-lg-3 col-md-6 col-12">
             <card
-              :title="stats.money.title"
-              :value="stats.money.value"
-              :percentage="stats.money.percentage"
-              :iconClass="stats.money.iconClass"
-              :iconBackground="stats.money.iconBackground"
-              :detail="stats.money.detail"
+              :title="stats.judgment.title"
+              :value="stats.judgment.value"
+              :iconClass="stats.judgment.iconClass"
+              :iconBackground="stats.judgment.iconBackground"
               directionReverse
             ></card>
           </div>
@@ -18,22 +16,18 @@
             <card
               :title="stats.users.title"
               :value="stats.users.value"
-              :percentage="stats.users.percentage"
               :iconClass="stats.users.iconClass"
               :iconBackground="stats.users.iconBackground"
-              :detail="stats.users.detail"
               directionReverse
             ></card>
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <card
-              :title="stats.clients.title"
-              :value="stats.clients.value"
-              :percentage="stats.clients.percentage"
-              :iconClass="stats.clients.iconClass"
-              :iconBackground="stats.clients.iconBackground"
-              :percentageColor="stats.clients.percentageColor"
-              :detail="stats.clients.detail"
+              :title="stats.managers.title"
+              :value="stats.managers.value"
+              :iconClass="stats.managers.iconClass"
+              :iconBackground="stats.managers.iconBackground"
+              :percentageColor="stats.managers.percentageColor"
               directionReverse
             ></card>
           </div>
@@ -56,8 +50,8 @@
               <gradient-line-chart />
             </div>
           </div>
-          <div class="col-lg-5">
-            <carousel />
+          <div class="col-lg-5 mt-5">
+            <crawler-card />
           </div>
         </div>
         <div class="row mt-4">
@@ -65,7 +59,7 @@
             <div class="card">
               <div class="p-3 pb-0 card-header">
                 <div class="d-flex justify-content-between">
-                  <h6 class="mb-2">Sales by Country</h6>
+                  <h6 class="mb-2 text-success">Lỗi bản án người dùng phản ánh</h6>
                 </div>
               </div>
               <div class="table-responsive">
@@ -107,9 +101,9 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-5">
+          <!-- <div class="col-lg-5">
             <categories-card />
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -118,8 +112,10 @@
 <script>
 import Card from "@/examples/Cards/Card.vue";
 import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-import Carousel from "./components/Carousel.vue";
-import CategoriesCard from "./components/CategoriesCard.vue";
+import axios from "axios";
+import * as APIConstant from "@/const/api.const";
+import CrawlerCard from "./components/CrawlerCard.vue";
+
 
 import US from "@/assets/img/icons/flags/US.png";
 import DE from "@/assets/img/icons/flags/DE.png";
@@ -128,39 +124,55 @@ import BR from "@/assets/img/icons/flags/BR.png";
 
 export default {
   name: "dashboard-default",
+  methods: {
+    getDataForDashBoard() {
+      try {
+            axios
+                .get(APIConstant.BASE_URL + APIConstant.GET_DATA_DASHBOARD)
+                .then((response) => {
+                    this.stats.judgment.value = response.data.data.total_judgments;
+                    this.stats.users.value = response.data.data.total_users;
+                    this.stats.managers.value = response.data.data.total_managers;
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+
+            } catch (error) {
+                console.log(error);
+            }
+    }
+  },
+  created() {
+    this.getDataForDashBoard();
+  },
   data() {
     return {
       stats: {
-        money: {
-          title: "Today's Money",
-          value: "$53,000",
-          percentage: "+55%",
+        judgment: {
+          title: "Bản án đã crawl",
+          value: null,
           iconClass: "ni ni-money-coins",
-          detail: "since yesterday",
           iconBackground: "bg-gradient-primary",
         },
         users: {
-          title: "Today's Users",
-          value: "2,300",
-          percentage: "+3%",
-          iconClass: "ni ni-world",
+          title: "Người dùng hệ thống",
+          value: null,
+          iconClass: "fa fa-user",
           iconBackground: "bg-gradient-danger",
-          detail: "since last week",
         },
-        clients: {
-          title: "New Clients",
-          value: "+3,462",
-          percentage: "-2%",
-          iconClass: "ni ni-paper-diploma",
+        managers: {
+          title: "Quản lý hệ thống",
+          value: null,
+          iconClass: "fa fa-calendar",
           percentageColor: "text-danger",
           iconBackground: "bg-gradient-success",
-          detail: "since last quarter",
         },
         sales: {
           title: "Sales",
           value: "$103,430",
           percentage: "+5%",
-          iconClass: "ni ni-cart",
+          iconClass: "fa fa-calendar",
           iconBackground: "bg-gradient-warning",
           detail: "than last month",
         },
@@ -200,8 +212,7 @@ export default {
   components: {
     Card,
     GradientLineChart,
-    Carousel,
-    CategoriesCard,
+    CrawlerCard
   },
 };
 </script>

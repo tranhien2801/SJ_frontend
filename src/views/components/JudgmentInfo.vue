@@ -34,7 +34,7 @@
                 Tòa án xét xử: 
               <span class="text-dark font-weight-normal">{{ judgment.court_name }}</span>
             </span><span class="mb-2 text-sm font-weight-bold">
-                Tóm tắt nội dung bản án: 
+                Thông tin vụ án: 
               <span class="text-dark font-weight-normal">{{ judgment.judgment_content }}</span>
             </span><span class="mb-2 text-sm font-weight-bold">
                 Tổng số lượt được bình chọn làm nguồn phát triển án lệ: 

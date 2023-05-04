@@ -236,10 +236,8 @@ export default {
           data: me.filter
         })
           .then((response) => {
-            console.log(response);
             me.showLoading = false;
             me.totalRecord = response.data.total;
-            console.log(me.totalRecord)
             if (me.totalRecord == 0 && me.filter.judgment_content != null) {
               this.searchBM25();
             } else {
@@ -251,6 +249,9 @@ export default {
             this.getLikedJudgment();
           })
           .catch((error) => {
+            if (error.response.status == APIConstant.STT_FORBIDDEN) {
+              me.$router.replace({ name: "Signin" });
+            }
             console.log(error);
           })
 

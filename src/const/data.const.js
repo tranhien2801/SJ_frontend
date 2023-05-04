@@ -1,6 +1,6 @@
 export const LEVELS = [
-    { value: 0, levelName: 'Doanh nghiệp' },
-    { value: 1, levelName: 'Cá nhân' }
+    { value: 1, levelName: 'Doanh nghiệp' },
+    { value: 0, levelName: 'Cá nhân' }
 ];
 
 export const USAGE_TIME = [

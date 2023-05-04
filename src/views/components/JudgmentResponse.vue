@@ -11,6 +11,11 @@
             </div>
         </div>
         <div class="d-flex flex-column mx-3 text-success my-3 font-weight-normal">
+            <div class="d-flex flex-column mb-2">
+                <label for="" class="form-check text-sm text-success font-weight-bold">Có thể làm nguồn án lệ <input
+                        type="checkbox" v-model="precedent" class="form-check-input" value="1" /></label>
+            </div>
+            <label for="" class="text-sm text-success font-weight-bold">Lỗi bản án (Nếu có)</label>
             <div class="d-flex">
                 <div class="d-flex flex-column col-md-6">
                     <div class="d-flex mb-2">
@@ -38,7 +43,7 @@
                 <label for="" class="text-sm text-success font-weight-bold">Nhập mô tả lỗi</label>
                 <textarea v-model="judgmentError.error_content" class="form-control" />
             </div>
-            <argon-button color="success" class="my-3" size="md" variant="gradient" @click="reportError">Gửi phản
+            <argon-button color="success" class="my-3" size="md" variant="gradient" @click="reportJudgment">Gửi phản
                 hồi</argon-button>
 
         </div>
@@ -67,6 +72,7 @@ export default {
             isShowPopupValidate: false,
             message: "",
             color: "success",
+            precedent: false,
         }
     },
     methods: {
@@ -89,7 +95,7 @@ export default {
                         this.isShowPopupValidate = true;
                         this.color = "danger";
                     } else {
-                        this.message = "Báo cáo lỗi bản án thành công";
+                        this.message = "Gửi ý kiến phản hồi về bản án " + this.judgment.judgment_number + " thành công";
                         this.isShowPopupValidate = true;
                         this.color = "success";
                     }
@@ -100,6 +106,50 @@ export default {
                     this.isShowPopupValidate = true;
                     this.color = "danger";
                 })
+        },
+        /**
+         * Gửi phản hồi về bản án
+         * Author: TTHIEN(22/04/2023)
+         */
+        reportJudgment() {
+            if (this.precedent) {
+                console.log("Bình chọn làm án lệ...")
+                this.voteJudgment();
+            }
+            if (this.judgmentError.error != null) {
+                this.reportError();
+            }
+        },
+        /**
+         * Vote bản án làm án lệ
+         * Author: TTHIEN(22/04/2023)
+         */
+        voteJudgment() {
+            try {
+                var uid = this.judgment.uid;
+                axios({
+                    method: "get",
+                    url: APIConstant.BASE_URL + APIConstant.GET_JUDGMENT + uid + "/vote",
+                    headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+                })
+                    .then((response) => {
+                        console.log(response);
+                        if (response.status != APIConstant.STT_OK) {
+                            this.message = response.data.error;
+                            this.isShowPopupValidate = true;
+                            this.color = "danger";
+                        } else {
+                            this.message = "Gửi ý kiến phản hồi về bản án " + this.judgment.judgment_number + " thành công";
+                            this.isShowPopupValidate = true;
+                            this.color = "success";
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            } catch (error) {
+                console.log(error);
+            }
         },
         /**
          * Ẩn PopupValidate 
