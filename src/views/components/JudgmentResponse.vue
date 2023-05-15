@@ -3,7 +3,7 @@
         <div class="d-flex panel-heading text-gradient">
             <div class="border-0 d-flex flex-column font-weight-bold p-3">
                 <h6 class="text-sm">
-                    Ý kiến phản hồi đối với Bản án số:
+                    Ý kiến phản hồi đối với {{ judgment.type_document }} số:
                 </h6>
                 <span class="text-sm">
                     {{ judgment.judgment_number }} ngày {{ judgment.date_issued }}

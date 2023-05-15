@@ -9,17 +9,10 @@
           </div>
         </div>
         <div :class="contentClass">
-          <div class="numbers" v-if="this.$store.state.isRTL">
+          <div class="numbers">
             <p class="mb-0 text-sm text-uppercase font-weight-bold" :class="titleColor">{{ title }}</p>
-            <h5 class="font-weight-bolder" :class="valueColor">{{ value }}
-            <span class="text-sm"  :class="percentageColor">{{ percentage }}</span> 
-            <span class="font-weight-light text-sm"> {{detail}}</span>
-            </h5>
-          </div>
-          <div class="numbers" v-else>
-            <p class="mb-0 text-sm text-uppercase font-weight-bold" :class="titleColor">{{ title }}</p>
-            <h5 class="font-weight-bolder" :class="valueColor">{{ value }}</h5>
-            <span class="text-sm"  :class="percentageColor">{{ percentage }}</span> 
+            <h6 class="mt-2" :class="valueColor">{{ value }}</h6>
+            <span class="mt-0 font-weight-bold"  :class="percentageColor">{{ percentage }}</span> 
             {{detail}}
           </div>
         </div>

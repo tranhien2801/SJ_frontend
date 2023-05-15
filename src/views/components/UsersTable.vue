@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-md-7 ms-5">
+    <div class="col-md-8">
       <div class="card"  style="padding-left: 10px !important;">
         <div class="card-header pb-0">
           <h6>Danh sách người dùng hệ thống</h6>
@@ -43,9 +43,6 @@
                   <td>
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" v-model="selected" :value="user.uid" />
-                      <!-- <label :for="id" class="custom-control-label">
-                    <slot />
-                  </label> -->
                     </div>
                   </td>
                   <td>
@@ -59,6 +56,7 @@
                   </td>
                   <td>
                     <span class="text-dark text-xs font-weight-bold">{{ user.level }}</span>
+                    <p class="text-xs text-dark mb-0" v-if="user.level == 'Doanh nghiệp'"> {{ user.power }}</p>
                   </td>
                   <td class="align-middle text-center text-sm">
                     <span class="badge badge-sm "
@@ -109,7 +107,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4 ms-3">
+    <div class="col-md-4">
       <UserDetail :userEdit="userEdit" nameButton="Chỉnh sửa" :mode="mode"/>
     </div>
   </div>
@@ -141,6 +139,7 @@ export default {
   data() {
     return {
       users: [],
+      user: null,
       totalRecord: 0,
       pageNumber: 1,
       totalPage: 0,
@@ -194,6 +193,7 @@ export default {
       this.message = `Bạn chắc chắn muốn xóa người dùng ${user.email}?`;
       this.color = "danger";
       this.isShowPopup = true;
+      this.user = user;
     },
     /**
      * Đóng Popup khi chọn No
@@ -205,9 +205,10 @@ export default {
     /**
      * Xử lý dữ liệu và Đóng Popup khi chọn Yes
      */
-    hidePopupYes(user) {
+    hidePopupYes() {
+      console.log(this.user)
       this.isShowPopup = false;
-      this.deleteUser(user);
+      this.deleteUser(this.user);
     },
     /**
      * Xóa người dùng

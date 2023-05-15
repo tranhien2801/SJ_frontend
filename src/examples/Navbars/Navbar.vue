@@ -9,13 +9,9 @@
         <div class="pe-md-3 d-flex align-items-center ms-md-auto">
         </div>
         <ul class="navbar-nav justify-content-end">
-          <li class="px-1 nav-item d-flex align-items-center cursor" @click="btnSignout">
-            <div class="p-0 nav-link font-weight-bold text-white hover-element">
-              <i class="fa fa-size fa-sign-out ms-auto" aria-hidden="true" ref="signOut"></i>
-            </div>
-          </li>
+         
 
-          <!-- <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+          <li class="nav-item px-1 d-flex align-items-center" v-if="!isUser">
             <a href="#" @click="toggleSidebar" class="p-0 nav-link text-white" id="iconNavbarSidenav">
               <div class="sidenav-toggler-inner">
                 <i class="sidenav-toggler-line bg-white"></i>
@@ -23,13 +19,13 @@
                 <i class="sidenav-toggler-line bg-white"></i>
               </div>
             </a>
-          </li> -->
-          <li class="px-2 nav-item d-flex align-items-center">
+          </li>
+          <li class="px-2 nav-item d-flex align-items-center"  v-if="isShowIcon">
             <router-link to="/history" class="p-0 nav-link text-white">
               <i class="cursor-pointer fa fa-size fa-history" ref="history"></i>
             </router-link>
           </li>
-          <li class="px-1 nav-item d-flex align-items-center">
+          <li class="px-1 nav-item d-flex align-items-center" v-if="isShowIcon">
             <router-link to="/liked" class="p-0 nav-link text-white">
               <i class="cursor-pointer fa fa-size fa-heart" ref="heart"></i>
             </router-link>
@@ -85,6 +81,7 @@
                   </div>
                 </a>
               </li>
+              
               <li>
                 <a class="dropdown-item border-radius-md" href="javascript:;">
                   <div class="py-1 d-flex">
@@ -121,6 +118,11 @@
               </li>
             </ul>
           </li>
+          <li class="px-1 nav-item d-flex align-items-center cursor" @click="btnSignout">
+            <div class="p-0 nav-link font-weight-bold text-white hover-element">
+              <i class="fa fa-size fa-sign-out ms-auto" aria-hidden="true" ref="signOut"></i>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -143,11 +145,19 @@ export default {
       isShowPopup: false,
       message: "",
       color: "success",
+      isShowIcon: true,
+      isUser: false,
     };
   },
   props: ["minNav", "textWhite"],
   created() {
     this.minNav;
+    if (Utils.isAdmin()) {
+      this.isShowIcon = false;
+    }
+    if (Utils.isUser()) {
+      this.isUser = true;
+    }
   },
   mounted() {
     tippy(this.$refs.signOut, {

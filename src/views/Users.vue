@@ -33,7 +33,7 @@ export default {
     };
   },
   created() {
-    this.$store.state.showSidenav = false;
+    // this.$store.state.showSidenav = false;
   },
   mounted() {
     this.$store.state.isAbsolute = true;

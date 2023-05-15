@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.1.250:8000/";
+const BASE_URL = "http://localhost:8000/";
 export const BASE_URL_SEARCH = "http://localhost:5000/"
 
 const HEADER_DEFAULT = {
@@ -23,6 +23,7 @@ export const CREATE_USER_LOGIN = "auth/signup";
 export const DELETE_USER = "user";
 export const CHANGE_PASSWORD = "user/change-password";
 export const EDIT_USER = "user/";
+export const GET_USER = "user/";
 export const GET_HISTORY = "user-activity";
 export const GET_USER_LIST = "user/list";
 export const RESET_PASSWORD = "user/reset-password/{0}";
@@ -44,12 +45,17 @@ export const SEARCH_JUDGMENT_BM25 = "judgment/bm25";
 export const GET_DATA_CHART = "judgment/data-chart";
 export const GET_DATA_DASHBOARD = "judgment/dashboard";
 export const CRAWL_JUDGMENTS = "crawler";
+export const SUMMARIZATION_JUDGMENT = "summarization?uid="
 
 
 export const KEY_TOKEN = "accessToken";
-export const ROLE_ID = "role";
+export const POWER_ID = "power";
 export const USER_ID = "user_id";
 export const USER_NAME = "userName";
+export const NUMBER_JUDGMENTS_CRAWLED = "crawled";
+export const DATE_CRAWLED_NEWEST = "date_crawled_newest";
+export const CRAWLING = "crawling";
+export const SUMMARIZING = "summarizing";
 
 export {
   BASE_URL,

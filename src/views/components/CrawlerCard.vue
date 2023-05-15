@@ -21,24 +21,29 @@
                     liệu</argon-button>
             </div>
         </div>
-        <div v-if="crawling">
-            <div class="mt-3 spinner-border text-success flex d-flex align-items-center justify-content-center position-absolute"
-                role="status" style="right: 50%">
+        <div v-if="crawling == 'true'" class="flex d-flex flex-column justify-content-center align-items-center">
+            <div class="mt-3 spinner-border text-success "
+                role="status">
             </div>
-            <div class="mt-5 position-absolute text-success text-center" style="width: 100%;">Đang crawl bản án...</div>
+            <div class="text-success text-center" style="width: 100%;">Đang crawl bản án...</div>
         </div>
     </div>
+    <PopUpValidate v-show="isShowPopupValidate" :message="message" :color="color" @hidePopupValidate="hidePopupValidate" />
 </template>
 
 <script>
 import ArgonButton from "@/components/ArgonButton.vue";
 import axios from "axios";
 import * as APIConstant from "@/const/api.const";
+import PopUpValidate from "../../components/PopUpValidate.vue";
+import Cookies from "js-cookie";
+import * as Utils from "../../utils/index";
 
 export default {
     name: "crawler-card",
     components: {
         ArgonButton,
+        PopUpValidate
     },
     data() {
         return {
@@ -46,8 +51,14 @@ export default {
                 date_from: "",
                 date_to: "",
             },
-            crawling: false,
+            crawling: null,
+            message: "",
+            color: "success",
+            isShowPopupValidate: false,
         }
+    },
+    created() {
+        this.crawling = Cookies.get(APIConstant.CRAWLING) 
     },
     methods: {
         /**
@@ -56,15 +67,23 @@ export default {
          */
         btnCrawlJudgment() {
             try {
-                this.crawling = true;
+                var isValid = this.validateData();
+                if (!isValid) {
+                    this.color = "warning";
+                    return;
+                }
+                Cookies.set(APIConstant.CRAWLING, true);
+                this.crawling = Cookies.get(APIConstant.CRAWLING);
+                console.log(this.filter)
                 axios({
                     method: "post",
                     url: APIConstant.BASE_URL_SEARCH + APIConstant.CRAWL_JUDGMENTS,
                     data: this.filter
                 })
                 .then((response) => {
-                    this.units = response.data.data;
-                    this.crawling = false;
+                    Utils.saveInforCrawled(response.data.data)
+                    this.crawling = Cookies.get(APIConstant.CRAWLING);
+                    this.$router.go();
                 })
                 .catch((error) => {
                     console.log(error);
@@ -74,7 +93,13 @@ export default {
                 console.log(error);
             }
         },
-
+        /**
+         * Ẩn PopupValidate 
+         * Author: TTHIEN (13/02/2023)
+         */
+         hidePopupValidate() {
+            this.isShowPopupValidate = false;
+        },
          /**
          * Thực hiện validate dữ liệu trước khi cất
          * Author: TTHIEN(13/02/2023)

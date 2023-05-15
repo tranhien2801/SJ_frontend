@@ -16,7 +16,10 @@ export default createStore({
     showNavbar: true,
     showFooter: true,
     showMain: true,
-    layout: "default"
+    layout: "default",
+    isAdminSystem: false,
+    isManager: false,
+    isUser: false
   },
   mutations: {
     toggleConfigurator(state) {

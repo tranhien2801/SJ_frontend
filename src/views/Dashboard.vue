@@ -1,5 +1,14 @@
 <template>
-  <div class="py-4 container-fluid">
+  <main>
+    <div class="container-fluid">
+      <div class="page-header min-height-300" style="background-image: url('https://anle.toaan.gov.vn/services/anlenew/images/slide.jpg');
+                  margin-right: -24px;
+                  margin-left: -34%;
+                ">
+        <span class="mask bg-gradient-success opacity-6"></span>
+      </div>
+    </div>
+  <div class="mt-n11 py-4 container-fluid">
     <div class="row">
       <div class="col-lg-12">
         <div class="row">
@@ -23,22 +32,22 @@
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <card
-              :title="stats.managers.title"
-              :value="stats.managers.value"
-              :iconClass="stats.managers.iconClass"
-              :iconBackground="stats.managers.iconBackground"
-              :percentageColor="stats.managers.percentageColor"
+              :title="stats.newest.title"
+              :value="stats.newest.value"
+              :iconClass="stats.newest.iconClass"
+              :iconBackground="stats.newest.iconBackground"
               directionReverse
             ></card>
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <card
-              :title="stats.sales.title"
-              :value="stats.sales.value"
-              :percentage="stats.sales.percentage"
-              :iconClass="stats.sales.iconClass"
-              :iconBackground="stats.sales.iconBackground"
-              :detail="stats.sales.detail"
+              :title="stats.crawler.title"
+              :value="stats.crawler.value"
+              :iconClass="stats.crawler.iconClass"
+              :iconBackground="stats.crawler.iconBackground"
+              :percentageColor="stats.crawler.percentageColor"
+              :percentage="stats.crawler.percentage"
+              :detail="stats.crawler.detail"
               directionReverse
             ></card>
           </div>
@@ -50,64 +59,14 @@
               <gradient-line-chart />
             </div>
           </div>
-          <div class="col-lg-5 mt-5">
+          <div class="col-lg-5 mt-8">
             <crawler-card />
           </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-lg-7 mb-lg-0 mb-4">
-            <div class="card">
-              <div class="p-3 pb-0 card-header">
-                <div class="d-flex justify-content-between">
-                  <h6 class="mb-2 text-success">Lỗi bản án người dùng phản ánh</h6>
-                </div>
-              </div>
-              <div class="table-responsive">
-                <table class="table align-items-center">
-                  <tbody>
-                    <tr v-for="(sale, index) in sales" :key="index">
-                      <td class="w-30">
-                        <div class="px-2 py-1 d-flex align-items-center">
-                          <div>
-                            <img :src="sale.flag" alt="Country flag" />
-                          </div>
-                          <div class="ms-4">
-                            <p class="mb-0 text-xs font-weight-bold">Country:</p>
-                            <h6 class="mb-0 text-sm">{{ sale.country }}</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="text-center">
-                          <p class="mb-0 text-xs font-weight-bold">Sales:</p>
-                          <h6 class="mb-0 text-sm">{{ sale.sales }}</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="text-center">
-                          <p class="mb-0 text-xs font-weight-bold">Value:</p>
-                          <h6 class="mb-0 text-sm">{{ sale.value }}</h6>
-                        </div>
-                      </td>
-                      <td class="text-sm align-middle">
-                        <div class="text-center col">
-                          <p class="mb-0 text-xs font-weight-bold">Bounce:</p>
-                          <h6 class="mb-0 text-sm">{{ sale.bounce }}</h6>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <!-- <div class="col-lg-5">
-            <categories-card />
-          </div> -->
         </div>
       </div>
     </div>
   </div>
+  </main>
 </template>
 <script>
 import Card from "@/examples/Cards/Card.vue";
@@ -115,12 +74,9 @@ import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
 import axios from "axios";
 import * as APIConstant from "@/const/api.const";
 import CrawlerCard from "./components/CrawlerCard.vue";
+import Cookies from "js-cookie";
+import * as DateUtils from "../utils/date.utils.js";
 
-
-import US from "@/assets/img/icons/flags/US.png";
-import DE from "@/assets/img/icons/flags/DE.png";
-import GB from "@/assets/img/icons/flags/GB.png";
-import BR from "@/assets/img/icons/flags/BR.png";
 
 export default {
   name: "dashboard-default",
@@ -132,7 +88,7 @@ export default {
                 .then((response) => {
                     this.stats.judgment.value = response.data.data.total_judgments;
                     this.stats.users.value = response.data.data.total_users;
-                    this.stats.managers.value = response.data.data.total_managers;
+                    this.stats.newest.value = DateUtils.formatDate(response.data.data.date_newest);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -145,6 +101,9 @@ export default {
   },
   created() {
     this.getDataForDashBoard();
+    this.stats.crawler.value = Cookies.get(APIConstant.DATE_CRAWLED_NEWEST);
+    this.stats.crawler.percentage = Cookies.get(APIConstant.NUMBER_JUDGMENTS_CRAWLED);
+    if (this.stats.crawler.percentage)  this.stats.crawler.detail = " bản án/quyết định";
   },
   data() {
     return {
@@ -161,50 +120,22 @@ export default {
           iconClass: "fa fa-user",
           iconBackground: "bg-gradient-danger",
         },
-        managers: {
-          title: "Quản lý hệ thống",
+        crawler: {
+          title: "Thời gian crawl gần nhất",
           value: null,
           iconClass: "fa fa-calendar",
-          percentageColor: "text-danger",
+          percentageColor: "text-success",
           iconBackground: "bg-gradient-success",
+          detail: null,
+          percentage: null
         },
-        sales: {
-          title: "Sales",
-          value: "$103,430",
+        newest: {
+          title: "Bản án công bố gần nhất",
+          value: null,
           percentage: "+5%",
           iconClass: "fa fa-calendar",
           iconBackground: "bg-gradient-warning",
           detail: "than last month",
-        },
-      },
-      sales: {
-        us: {
-          country: "United States",
-          sales: 2500,
-          value: "$230,900",
-          bounce: "29.9%",
-          flag: US,
-        },
-        germany: {
-          country: "Germany",
-          sales: "3.900",
-          value: "$440,000",
-          bounce: "40.22%",
-          flag: DE,
-        },
-        britain: {
-          country: "Great Britain",
-          sales: "1.400",
-          value: "$190,700",
-          bounce: "23.44%",
-          flag: GB,
-        },
-        brasil: {
-          country: "Brasil",
-          sales: "562",
-          value: "$143,960",
-          bounce: "32.14%",
-          flag: BR,
         },
       },
     };
@@ -213,6 +144,13 @@ export default {
     Card,
     GradientLineChart,
     CrawlerCard
+  },
+  mounted() {
+    this.$store.state.isAbsolute = true;
+  },
+  beforeUnmount() {
+    this.$store.state.hideConfigButton = false;
+    this.$store.state.showSidenav = true;
   },
 };
 </script>

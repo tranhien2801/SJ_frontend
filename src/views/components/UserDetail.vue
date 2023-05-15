@@ -11,7 +11,7 @@
                 </div>
                 <div class="col-md-6">
                     <label for="example-text-input" class="form-control-label">Cấp tài khoản</label>
-                    <Multiselect v-model="user.level" :placeholder="user.level" label="levelName" track-by="value"
+                    <Multiselect v-model="user.level" :placeholder="user.level" label="value" track-by="value"
                         :options="levels">
                     </Multiselect>
                 </div>
@@ -29,13 +29,13 @@
                 </div>
                 <div class="col-md-6" v-show="this.mode === '2'">
                     <label for="example-text-input" class="form-control-label">Trạng thái tài khoản</label>
-                    <Multiselect v-model="user.state" :placeholder="user.state" track-by="value" label="name"
+                    <Multiselect v-model="user.state" :placeholder="user.state" track-by="value" label="value"
                         :options="states">
                     </Multiselect>
                 </div>
                 <div class="col-md-6">
                     <label for="example-text-input" class="form-control-label">Thời hạn sử dụng</label>
-                    <Multiselect v-model="user.usageTime" :placeholder="user.usageTime" track-by="value" label="name"
+                    <Multiselect v-model="user.usageTime" :placeholder="user.usageTime" track-by="value" label="value"
                         :options="usageTimes">
                     </Multiselect>
                 </div>
@@ -68,10 +68,9 @@
 
                 <div class="col-md-6">
                     <label for="example-text-input" class="form-control-label">Quyền, Chức vụ</label>
-                    <Multiselect v-model="user.role" :placeholder="user.role" track-by="value" label="name"
+                    <Multiselect v-model="user.role" :placeholder="user.role" track-by="value" label="value"
                         :options="roles">
                     </Multiselect>
-                    <div class="name__missing">Quyền, chức vụ không được để trống</div>
                 </div>
                 <div class="col-md-6">
                     <label for="example-text-input" class="form-control-label">Công việc</label>
@@ -113,7 +112,6 @@ export default {
     data() {
         return {
             user: {},
-            user1: {},
             units: [],
             caseTypes: [],
             levels: Data.LEVELS,
@@ -128,12 +126,15 @@ export default {
     created() {
         this.getUnits();
         this.getCaseTypes();
-        
+        if (Utils.isManager()) {
+            this.user.level = Data.LEVEL_NAME.Enterprise;
+            this.getInforAccount();
+        }
+
     },
     updated() {
         if (this.userEdit) {
             this.user = this.userEdit;
-            console.log("Lấy dữ liệu.....")
         }
     },
     methods: {
@@ -193,6 +194,7 @@ export default {
                     return;
                 }
                 if (this.mode == Data.MODES.Signup) {
+                    console.log(this.user)
                     axios({
                         method: "post",
                         url: APIConstant.BASE_URL + APIConstant.CREATE_USER_LOGIN,
@@ -209,6 +211,7 @@ export default {
                                 this.isShowPopupValidate = true;
                                 this.color = "success";
                                 this.sendEmailConfirm();
+                                this.$router.go();
                             }
                         })
                         .catch((error) => {
@@ -217,34 +220,31 @@ export default {
                             this.color = "danger";
                         })
                 } else {
-                    if (this.user != this.userEdit) {
-                        axios({
-                            method: "put",
-                            url: APIConstant.BASE_URL + APIConstant.EDIT_USER + me.user.uid,
-                            headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
-                            data: me.user
-                        })
-                            .then((response) => {
-                                if (response.status != APIConstant.STT_OK) {
-                                    this.message = response.data.error;
-                                    this.isShowPopupValidate = true;
-                                    this.color = "danger";
-                                } else {
-                                    this.message = "Sửa thông tin tài khoản thành công";
-                                    this.isShowPopupValidate = true;
-                                    this.color = "success";
-                                }
-                            })
-                            .catch((error) => {
-                                this.message = Utils.formatResponseError(error);
+                    // if (this.user != this.userEdit) {
+                    console.log(this.user)
+                    axios({
+                        method: "put",
+                        url: APIConstant.BASE_URL + APIConstant.EDIT_USER + me.user.uid,
+                        headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+                        data: me.user
+                    })
+                        .then((response) => {
+                            console.log(response)
+                                this.message = "Sửa thông tin tài khoản thành công";
                                 this.isShowPopupValidate = true;
-                                this.color = "danger";
-                            })
-                    } else {
-                        this.message = "Dữ liệu không có sự thay đổi";
-                        this.isShowPopupValidate = true;
-                        this.color = "success";
-                    }
+                                this.color = "success";
+                                this.$router.go();
+                        })
+                        .catch((error) => {
+                            this.message = Utils.formatResponseError(error);
+                            this.isShowPopupValidate = true;
+                            this.color = "danger";
+                        })
+                    // } else {
+                    //     this.message = "Dữ liệu không có sự thay đổi";
+                    //     this.isShowPopupValidate = true;
+                    //     this.color = "success";
+                    // }
                 }
             } catch (error) {
                 console.log(error);
@@ -264,6 +264,30 @@ export default {
                 })
                     .then((response) => {
                         console.log(response);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        /** 
+         * Lấy thông tin tài khoản
+         * Author: TTHIEN(07/05/2023)
+         */
+        getInforAccount() {
+            try {
+                axios({
+                    method: "get",
+                    url: APIConstant.BASE_URL + APIConstant.GET_USER + Cookies.get(APIConstant.USER_ID),
+                    headers: { 'Authorization': 'Bearer ' + Cookies.get(APIConstant.KEY_TOKEN) },
+                })
+                    .then((response) => {
+                        console.log(response);
+                        console.log(response.data.data.unit.unitName)
+                        this.user.unit = response.data.data.unit.unitName;
                     })
                     .catch((error) => {
                         console.log(error);
@@ -329,6 +353,26 @@ export default {
                 // Loại bỏ border màu đỏ cho input hiện tại
                 this.$refs["txtPassword"].classList.remove("input__error");
             }
+            if (this.user.level == Data.LEVEL_NAME.Enterprise) {
+                if (!this.user.unit) {
+                    isValid = false;
+                    this.message = "Đơn vị công tác không được để trống";
+                    this.isShowPopupValidate = true;
+                    return isValid;
+                } else {
+                    isValid = true;
+                }
+                console.log(this.user.role)
+                if (this.user.role == null) {
+                    isValid = false;
+                    this.message = "Quyền, chức vụ không được để trống";
+                    this.isShowPopupValidate = true;
+                    return isValid;
+                } else {
+                    isValid = true;
+                }
+            }
+
 
             return isValid;
         },

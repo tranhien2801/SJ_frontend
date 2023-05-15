@@ -18,6 +18,7 @@
 
 <script>
 import JudgmentCard from "./components/JudgmentCard.vue";
+import * as Utils from "../utils/index";
 
 export default {
   name: "Judgment",
@@ -29,7 +30,8 @@ export default {
     };
   },
   created() {
-    this.$store.state.showSidenav = false;
+    if (Utils.isUser())
+      this.$store.state.showSidenav = false;
   },
   mounted() {
     this.$store.state.isAbsolute = true;

@@ -1,6 +1,6 @@
 <template>
   <!-- Phần bộ lọc tìm kiếm -->
-  <div class="col-md-3 mx-5 fit-content">
+  <div class="fit-content" :class="isUser ? 'col-md-3 mx-5 ' : 'col-md-4 mx-4 '">
     <div class="card overflow-hidden h-100 p-0">
       <div class="d-flex panel-heading text-gradient">
         <div class="border-0 d-flex flex-column font-weight-bold p-3 mb-0">
@@ -131,6 +131,7 @@
 import axios from "axios";
 import * as APIConstant from "@/const/api.const";
 import * as DateUtils from "../../utils/date.utils.js";
+import * as Utils from "../../utils/index";
 import Paginate from "@/libs/vuejs-paginate-next";
 import Cookies from "js-cookie";
 import Multiselect from '@/libs/multiselect';
@@ -168,7 +169,8 @@ export default {
       ],
       caseTypes: [],
       courtLevels: [],
-      judgmentLevels: []
+      judgmentLevels: [],
+      isUser: false,
 
     }
   },
@@ -181,6 +183,7 @@ export default {
     this.getJudgmentLevels();
     this.getCourtLevels();
     this.filterJudgments();
+    if (Utils.isUser()) this.isUser = true;
   },
   methods: {
     /**
@@ -188,8 +191,6 @@ export default {
      * Author: TTHIEN(23/02/2023)
      */
     getLikedJudgment() {
-      console.log(this.judgments)
-      console.log(APIConstant.USER_ID)
       this.judgments.forEach(function (judgment) {
         if (judgment.user_uid == Cookies.get(APIConstant.USER_ID)) {
           console.log("Người dùng đã like bản án")
@@ -229,6 +230,7 @@ export default {
       try {
         var me = this;
         me.showLoading = true;
+        console.log(this.filter)
         axios({
           method: "post",
           url: APIConstant.BASE_URL + APIConstant.GET_JUDGMENT_LIST + `?page=${me.pageNumber}`,
@@ -236,15 +238,17 @@ export default {
           data: me.filter
         })
           .then((response) => {
-            me.showLoading = false;
             me.totalRecord = response.data.total;
             if (me.totalRecord == 0 && me.filter.judgment_content != null) {
+              if (this.filter.precedent == false) this.filter.precedent = "";
+              if (this.filter.vote == false)  this.filter.vote = "";
               this.searchBM25();
             } else {
               me.totalPage = response.data.total_page;
               me.pageNumber = response.data.page;
               me.judgments = response.data.data;
               me.convertJudgmentTitle();
+              me.showLoading = false;
             }
             this.getLikedJudgment();
           })
@@ -278,6 +282,7 @@ export default {
             this.pageNumber = response.data.page;
             this.judgments = response.data.data;
             this.convertJudgmentTitle();
+            this.showLoading = false;
           })
           .catch((error) => {
             console.log(error);

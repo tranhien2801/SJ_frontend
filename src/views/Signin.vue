@@ -22,8 +22,7 @@
                 <div class="card-body">
                   <div role="form">
                     <div class="mb-3">
-                      <input class="form-control" tabindex="1" type="email" placeholder="Email"
-                        v-model="user.username" />
+                      <input class="form-control" tabindex="1" type="email" placeholder="Email" v-model="user.username" />
                     </div>
                     <div class="mb-3">
                       <input class="form-control" tabindex="2" type="password" placeholder="Mật khẩu"
@@ -45,14 +44,14 @@
       </div>
     </section>
   </main>
-  <PopUpValidate v-show="isShowPopupValidate" :message="message" :color="color"
-    @hidePopupValidate="hidePopupValidate" />
+  <PopUpValidate v-show="isShowPopupValidate" :message="message" :color="color" @hidePopupValidate="hidePopupValidate" />
 </template>
 
 <script>
 import axios from "axios";
 import * as APIConstant from "../const/api.const";
 import * as Utils from "../utils/index";
+import * as Data from "../const/data.const";
 import PopUpValidate from "../components/PopUpValidate.vue";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
@@ -72,7 +71,7 @@ export default {
     this.$store.state.showFooter = false;
     body.classList.remove("bg-gray-100");
   },
-   mounted() {
+  mounted() {
     this.$store.state.isAbsolute = true;
   },
   beforeUnmount() {
@@ -113,7 +112,13 @@ export default {
               this.isShowPopupValidate = true;
               this.color = "success";
               Utils.handlingLogin(response.data.data);
-              me.$router.replace({ name: "Judgment" });
+              if (response.data.data.power == Data.POWER.User) {
+                me.$router.replace({ name: "Judgment" });
+              } else if (response.data.data.power == Data.POWER.AdminSystem) {
+                me.$router.replace({ name: "Dashboard" });
+              } else if (response.data.data.power == Data.POWER.Manager) {
+                me.$router.replace({ name: "Signup" });
+              }
             }
           })
           .catch((error) => {

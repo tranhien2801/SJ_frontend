@@ -4,7 +4,7 @@
     id="sidenav-collapse-main"
   >
     <ul class="navbar-nav">
-      <li class="nav-item">
+      <li class="nav-item" v-if="isAdmin">
         <sidenav-item
           url="/dashboard-default"
           :class="getRoute() === 'dashboard-default' ? 'active' : ''"
@@ -28,44 +28,14 @@
           </template>
         </sidenav-item>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" v-if="isManager">
         <sidenav-item
-          url="/home"
+          url="/judgment"
           :class="getRoute() === 'judgment' ? 'active' : ''"
           :navText="'Bản án'"
         >
           <template v-slot:icon>
             <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
-          </template>
-        </sidenav-item>
-      </li>
-      <li class="mt-3 nav-item">
-        <h6
-          class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
-          :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
-        >
-          ACCOUNT PAGES
-        </h6>
-      </li>
-      <li class="nav-item">
-        <sidenav-item
-          url="/profile"
-          :class="getRoute() === 'profile' ? 'active' : ''"
-          :navText="'Profile'"
-        >
-          <template v-slot:icon>
-            <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
-          </template>
-        </sidenav-item>
-      </li>
-      <li class="nav-item">
-        <sidenav-item
-          url="/signin"
-          :class="getRoute() === 'signin' ? 'active' : ''"
-          :navText="'Đăng nhập'"
-        >
-          <template v-slot:icon>
-            <i class="ni ni-single-copy-04 text-danger text-sm opacity-10"></i>
           </template>
         </sidenav-item>
       </li>
@@ -82,17 +52,11 @@
       </li>
     </ul>
   </div>
-  <!-- <div class="pt-3 mx-3 mt-3 sidenav-footer">
-    <sidenav-card
-      :class="cardBg"
-      textPrimary="Need Help?"
-      textSecondary="Please check our docs"
-    />
-  </div> -->
+ 
 </template>
 <script>
 import SidenavItem from "./SidenavItem.vue";
-// import SidenavCard from "./SidenavCard.vue";
+import * as Utils from "../../utils/index";
 
 export default {
   name: "SidenavList",
@@ -103,12 +67,21 @@ export default {
     return {
       title: "Argon Dashboard 2",
       controls: "dashboardsExamples",
-      isActive: "active"
+      isActive: "active",
+      isManager: false,
+      isAdmin: false,
     };
   },
   components: {
     SidenavItem,
-    // SidenavCard
+  },
+  created() {
+    if (Utils.isManager()) {
+      this.isManager = true;
+    }
+    if (Utils.isAdmin()) {
+      this.isAdmin = true;
+    }
   },
   methods: {
     getRoute() {

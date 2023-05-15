@@ -13,9 +13,7 @@
         <div class="col-md-8">
           <UserDetail :mode="mode" nameButton="Đăng ký"/>
         </div>
-        <div class="col-md-4">
-          <!-- <profile-card /> -->
-        </div>
+        
       </div>
     </div>
   </main>

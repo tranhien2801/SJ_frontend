@@ -1,24 +1,29 @@
 export const LEVELS = [
-    { value: 1, levelName: 'Doanh nghiệp' },
-    { value: 0, levelName: 'Cá nhân' }
+    { value: 'Doanh nghiệp' },
+    { value: 'Cá nhân' }
 ];
 
+export const LEVEL_NAME = {
+    Enterprise: 'Doanh nghiệp',
+    Personal: 'Cá nhân'
+}
+
 export const USAGE_TIME = [
-    { value: 0, name: '7 ngày dùng thử' },
-    { value: 1, name: "vĩnh viễn" }
+    { value: '7 ngày dùng thử' },
+    { value: "vĩnh viễn" }
 ];
 
 export const STATES = [
-    { value: 1, name: "active" },
-    { value: 2, name: "deactive" }
+    { value: "Hoạt động" },
+    { value: "Không hoạt động" }
 ];
 
 export const ROLES = [
-    { value: 0, name: "Quản lý" },
-    { value: 1, name: "Nhân viên" },
-    { value: 2, name: "Kế toán" },
-    { value: 3, name: "Nhân viên content" },
-    { value: 4, name: "Khác" }
+    { value: "Quản lý" },
+    { value: "Nhân viên" },
+    { value: "Kế toán" },
+    { value: "Nhân viên content" },
+    { value: "Khác" }
 ];
 
 export const MODES = {
@@ -30,3 +35,18 @@ export const SEARCH_RECOMMENDATION = {
     Search: "1",
     Recommendation: "2"
 }
+
+export const POWER = {
+    AdminSystem: "1",
+    Admin: "2",
+    Manager: "3",
+    User: "4"
+}
+
+export const POWERS = [
+    {value: "Quản trị hệ thống"},
+    {value: "Quản trị viên"},
+    {value: "Quản lý"},
+    {value: "Quản nhân viên"},
+]
+

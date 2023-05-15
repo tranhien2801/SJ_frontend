@@ -1,5 +1,5 @@
 <template>
-   <main>
+  <main>
     <div class="container-fluid">
       <div class="page-header min-height-300" style="background-image: url('https://anle.toaan.gov.vn/services/anlenew/images/slide.jpg');
                   margin-right: -24px;
@@ -10,28 +10,33 @@
     </div>
     <div class="mt-n11 py-4 container-fluid">
       <div class="row">
-      <div class="col-lg-12">
-        <div class="row">
-          <div class="col-md-3">
-            <div style="position: sticky !important;  height: 50vh !important;">
-              <JudgmentInfo :judgment="judgment" />
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-md-3">
+              <div style="position: sticky !important;  height: 50vh !important;">
+                <JudgmentInfo :judgment="judgment" />
+              </div>
+              <div class="my-3">
+                <JudgmentResponse :judgment="judgment" />
+              </div>
             </div>
-            <div class="my-3">
-              <JudgmentResponse :judgment="judgment" />
+            <div class="col-md-6">
+              <div class="card z-index-2">
+                <iframe class="load-pdf" :src="judgment.pdf_viewer"></iframe>
+              </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card z-index-2">
-              <iframe class="load-pdf" :src="judgment.pdf_viewer"></iframe>
+            <div class="col-md-3 overflow-auto hide-scroll" >
+              <div class="mb-3">
+                <JudgmentSummarization :uid="judgment.uid"/>
+              </div>
+              <div style="position: sticky !important;  height: 30vh !important;">
+                <JudgmentRecommended :judgments="judgments" @loadPage="loadPage" />
+              </div>
             </div>
-          </div>
-          <div class="col-md-3 my-3">
-            <JudgmentRecommended :judgments="judgments" @loadPage="loadPage"/>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </main>
 </template>
 <script>
@@ -41,6 +46,7 @@ import * as DateUtils from "../utils/date.utils.js";
 import JudgmentInfo from "./components/JudgmentInfo.vue";
 import JudgmentResponse from "./components/JudgmentResponse.vue";
 import JudgmentRecommended from "./components/JudgmentRecommended.vue";
+import JudgmentSummarization from "./components/JudgmentSummaziration.vue";
 import Cookies from "js-cookie";
 
 export default {
@@ -55,12 +61,12 @@ export default {
   components: {
     JudgmentInfo,
     JudgmentResponse,
-    JudgmentRecommended
+    JudgmentRecommended,
+    JudgmentSummarization
   },
   created() {
     this.$store.state.showSidenav = false;
     this.uid = this.$route.params.uid;
-    console.log(this.uid);
     this.detailJudgment();
   },
   beforeUnmount() {
@@ -82,7 +88,6 @@ export default {
         .then((response) => {
           if (response.data.status == 200) {
             me.judgment = response.data.data;
-            console.log(this.judgment)
             me.judgment.date_issued = DateUtils.formatDate(me.judgment.date_issued);
             this.judgmentRecommended();
           }
@@ -106,12 +111,9 @@ export default {
      */
     judgmentRecommended() {
       try {
-        console.log(APIConstant.BASE_URL_SEARCH + APIConstant.GET_JUDGMENT_RECOMMENDED + this.judgment.judgment_content)
         axios.get(APIConstant.BASE_URL_SEARCH + APIConstant.GET_JUDGMENT_RECOMMENDED + this.judgment.judgment_content)
           .then((response) => {
-            console.log(response);
             this.judgments = response.data.data;
-            console.log(this.judgments[0].uid)
             this.convertJudgmentTitle();
           })
           .catch((error) => {
@@ -134,13 +136,15 @@ export default {
           + " về " + judgment.judgment_name;
       })
     },
-   
+
   }
 };
 </script>
 <style>
 .load-pdf {
-  height: 97vh !important; 
+  height: 110vh !important;
 }
-
+.hide-scroll::-webkit-scrollbar{
+  display: none;
+}
 </style>
